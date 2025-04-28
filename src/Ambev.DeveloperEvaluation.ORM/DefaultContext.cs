@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public class DefaultContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDefaultSchema("app");
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
     }
@@ -33,8 +35,8 @@ public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         builder.UseNpgsql(
-               connectionString,
-               b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.WebApi")
+            connectionString,
+            npgsqlOptions => npgsqlOptions.ConfigureDefaults()
         );
 
         return new DefaultContext(builder.Options);
