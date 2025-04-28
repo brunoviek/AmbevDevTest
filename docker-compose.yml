@@ -50,5 +50,5 @@
     ports:
       - "6379:6379"
 
-volumes:
+ volumes:
   postgres_data:

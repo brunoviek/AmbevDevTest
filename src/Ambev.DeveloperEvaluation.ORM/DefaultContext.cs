@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -35,11 +36,8 @@ public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
 
         builder.UseNpgsql(
             connectionString,
-            npgsqlOptions =>
-            {
-                npgsqlOptions.MigrationsAssembly("Ambev.DeveloperEvaluation.ORM");
-                npgsqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "migrations");
-            });
+            npgsqlOptions => npgsqlOptions.ConfigureDefaults()
+        );
 
         return new DefaultContext(builder.Options);
     }
