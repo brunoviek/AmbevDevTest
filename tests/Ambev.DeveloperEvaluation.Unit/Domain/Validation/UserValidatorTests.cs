@@ -1,6 +1,7 @@
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Validation;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
+using FluentAssertions;
 using FluentValidation.TestHelper;
 using Xunit;
 
@@ -203,4 +204,163 @@ public class UserValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Role);
     }
+
+    /// <summary>
+    /// Validates that the user fails validation when Latitude is provided 
+    /// in an invalid format (non-numeric string).
+    /// Expected: Validation should fail for Address.Geolocation.Lat.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when Latitude has invalid format (non-numeric)")]
+    public void Should_Fail_When_Latitude_Is_Invalid_Format()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.Geolocation.Lat = "invalid_latitude";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+    }
+
+    /// <summary>
+    /// Validates that the user fails validation when Latitude is provided 
+    /// with a numeric value outside the valid range (-90 to 90).
+    /// Expected: Validation should fail for Address.Geolocation.Lat.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when Latitude value is out of valid range (-90 to 90)")]
+    public void Should_Fail_When_Latitude_Is_Out_Of_Range()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.Geolocation.Lat = "91";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+    }
+
+    /// <summary>
+    /// Validates that the user fails validation when Longitude is provided 
+    /// in an invalid format (non-numeric string).
+    /// Expected: Validation should fail for Address.Geolocation.Long.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when Longitude has invalid format (non-numeric)")]
+    public void Should_Fail_When_Longitude_Is_Invalid_Format()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.Geolocation.Long = "invalid_longitude";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+    }
+
+    /// <summary>
+    /// Validates that the user fails validation when Longitude is provided 
+    /// with a numeric value outside the valid range (-180 to 180).
+    /// Expected: Validation should fail for Address.Geolocation.Long.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when Longitude value is out of valid range (-180 to 180)")]
+    public void Should_Fail_When_Longitude_Is_Out_Of_Range()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.Geolocation.Long = "200";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+    }
+
+    /// <summary>
+    /// Validates that the user fails validation when Street is informed 
+    /// but other Address fields (City, Zipcode, Number, Geolocation) are missing or invalid.
+    /// Expected: Validation should fail for City, Zipcode, Number, Latitude, and Longitude.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when Street is filled but other Address fields are missing")]
+    public void Should_Fail_When_Street_Is_Filled_But_Other_Address_Fields_Are_Missing()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.City = "";
+        user.Address.Zipcode = "";
+        user.Address.Number = 0;
+        user.Address.Geolocation.Lat = "";
+        user.Address.Geolocation.Long = "";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.City);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Zipcode);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Number);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+    }
+
+    /// <summary>
+    /// Validates that the user fails validation when only City is filled 
+    /// and other Address fields (Street, Zipcode, Number, Geolocation) are missing or invalid.
+    /// Expected: Validation should fail for Street, Zipcode, Number, Latitude, and Longitude.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when City is filled but other Address fields are missing")]
+    public void Should_Fail_When_City_Is_Filled_But_Other_Address_Fields_Are_Missing()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.Street = "";
+        user.Address.Zipcode = "";
+        user.Address.Number = 0;
+        user.Address.Geolocation.Lat = "";
+        user.Address.Geolocation.Long = "";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Street);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Zipcode);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Number);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+    }
+
+    /// <summary>
+    /// Validates that the user fails validation when only Number is filled 
+    /// and other Address fields (Street, City, Zipcode, Geolocation) are missing or invalid.
+    /// Expected: Validation should fail for Street, City, Zipcode, Latitude, and Longitude.
+    /// </summary>
+    [Fact(DisplayName = "Should fail when only Number is filled in Address")]
+    public void Should_Fail_When_Only_Number_Is_Filled_In_Address()
+    {
+        var user = UserTestData.GenerateValidUser();
+        user.Address!.Street = "";
+        user.Address.City = "";
+        user.Address.Zipcode = "";
+        user.Address.Geolocation.Lat = "";
+        user.Address.Geolocation.Long = "";
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Street);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.City);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Zipcode);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+    }
+
+    /// <summary>
+    /// Validates that the user passes validation when Address is completely and correctly filled.
+    /// Expected: Validation should succeed with all Address fields correctly populated.
+    /// </summary>
+    [Fact(DisplayName = "Should pass when Address is completely filled")]
+    public void Should_Pass_When_Address_Is_Completely_Filled()
+    {
+        var user = UserTestData.GenerateValidUser();
+
+        var result = _validator.TestValidate(user);
+
+        result.IsValid.Should().BeTrue();
+    }
+
+
 }

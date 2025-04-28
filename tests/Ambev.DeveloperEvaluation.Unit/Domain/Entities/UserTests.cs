@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using Xunit;
@@ -76,7 +76,24 @@ public class UserTests
             Email = UserTestData.GenerateInvalidEmail(), // Invalid: not a valid email
             Phone = UserTestData.GenerateInvalidPhone(), // Invalid: doesn't match pattern
             Status = UserStatus.Unknown, // Invalid: cannot be Unknown
-            Role = UserRole.None // Invalid: cannot be None
+            Role = UserRole.None, // Invalid: cannot be None
+            Name = new Name
+            {
+                Firstname = "OnlyFirstname",
+                Lastname = "" // Missing Lastname -> Invalid
+            },
+                Address = new Address
+                {
+                    Street = "Street Only",
+                    City = "", // Missing City
+                    Zipcode = "", // Missing Zipcode
+                    Number = 0, // Invalid Number
+                    Geolocation = new Geolocation
+                    {
+                        Lat = "invalid_latitude", // Invalid format
+                        Long = "" // Missing Longitude
+                    }
+                }
         };
 
         // Act
