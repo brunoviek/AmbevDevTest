@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Text.RegularExpressions;
@@ -26,6 +26,46 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Role)
             .HasConversion<string>()
             .HasMaxLength(20);
+
+        builder.OwnsOne(u => u.Name, name =>
+        {
+            name.Property(n => n.Firstname)
+                .HasMaxLength(100)
+                .HasColumnName("Firstname");
+
+            name.Property(n => n.Lastname)
+                .HasMaxLength(100)
+                .HasColumnName("Lastname");
+        });
+
+        builder.OwnsOne(u => u.Address, address =>
+        {
+            address.Property(a => a.Street)
+                .HasMaxLength(150)
+                .HasColumnName("Street");
+
+            address.Property(a => a.Number)
+                .HasColumnName("Number");
+
+            address.Property(a => a.City)
+                .HasMaxLength(100)
+                .HasColumnName("City");
+
+            address.Property(a => a.Zipcode)
+                .HasMaxLength(20)
+                .HasColumnName("Zipcode");
+
+            address.OwnsOne(a => a.Geolocation, geo =>
+            {
+                geo.Property(g => g.Lat)
+                    .HasMaxLength(20)
+                    .HasColumnName("Latitude");
+
+                geo.Property(g => g.Long)
+                    .HasMaxLength(20)
+                    .HasColumnName("Longitude");
+            });
+        });
 
     }
 }
