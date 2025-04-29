@@ -1,3 +1,4 @@
+using Ambev.DeveloperEvaluation.Application.Users.Results;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;

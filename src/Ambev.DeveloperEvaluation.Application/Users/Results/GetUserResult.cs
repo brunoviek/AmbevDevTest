@@ -1,11 +1,11 @@
 using Ambev.DeveloperEvaluation.Domain.Enums;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+namespace Ambev.DeveloperEvaluation.Application.Users.Results;
 
 /// <summary>
-/// API response model for GetUser operation
+/// Response model for GetUser operation
 /// </summary>
-public class GetUserResponse
+public class GetUserResult
 {
     /// <summary>
     /// The unique identifier of the user
@@ -15,7 +15,7 @@ public class GetUserResponse
     /// <summary>
     /// The user's full name
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
 
     /// <summary>
     /// The user's email address
@@ -25,7 +25,7 @@ public class GetUserResponse
     /// <summary>
     /// The user's phone number
     /// </summary>
-    public string Phone { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;   
 
     /// <summary>
     /// The user's role in the system
@@ -36,4 +36,14 @@ public class GetUserResponse
     /// The current status of the user
     /// </summary>
     public UserStatus Status { get; set; }
+
+    /// <summary>
+    /// Gets or sets the name details of the user (firstname and lastname).
+    /// </summary>
+    public GetUserNameResult? Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the address details of the user, including geolocation.
+    /// </summary>
+    public GetUserAddressResult? Address { get; set; }
 }

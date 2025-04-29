@@ -47,8 +47,8 @@ public class UserValidator : AbstractValidator<User>
                       !string.IsNullOrWhiteSpace(user.Address.Zipcode) ||
                       (user.Address.Number != 0) ||
                       (user.Address.Geolocation != null &&
-                       (!string.IsNullOrWhiteSpace(user.Address.Geolocation.Lat) ||
-                        !string.IsNullOrWhiteSpace(user.Address.Geolocation.Long)))), () =>
+                       (!string.IsNullOrWhiteSpace(user.Address.Geolocation.Latitude) ||
+                        !string.IsNullOrWhiteSpace(user.Address.Geolocation.Longitude)))), () =>
                         {
                             RuleFor(user => user.Address!.Street)
                                 .NotEmpty().WithMessage("Street is required if Address is informed.")
@@ -65,11 +65,11 @@ public class UserValidator : AbstractValidator<User>
                             RuleFor(user => user.Address!.Number)
                                 .GreaterThan(0).WithMessage("Number must be greater than zero if Address is informed.");
 
-                            RuleFor(user => user.Address!.Geolocation.Lat)
+                            RuleFor(user => user.Address!.Geolocation.Latitude)
                                 .NotEmpty().WithMessage("Latitude is required if Address is informed.")
                                 .Must(BeValidLatitude).WithMessage("Latitude must be a valid decimal number between -90 and 90.");
 
-                            RuleFor(user => user.Address!.Geolocation.Long)
+                            RuleFor(user => user.Address!.Geolocation.Longitude)
                                 .NotEmpty().WithMessage("Longitude is required if Address is informed.")
                                 .Must(BeValidLongitude).WithMessage("Longitude must be a valid decimal number between -180 and 180.");
                         });

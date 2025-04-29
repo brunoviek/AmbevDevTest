@@ -41,8 +41,8 @@ public static class UserTestData
             Zipcode = f.Address.ZipCode(),
             Geolocation = new Geolocation
             {
-                Lat = f.Address.Latitude().ToString(),
-                Long = f.Address.Longitude().ToString()
+                Latitude = f.Address.Latitude().ToString(),
+                Longitude = f.Address.Longitude().ToString()
             }
         });
 

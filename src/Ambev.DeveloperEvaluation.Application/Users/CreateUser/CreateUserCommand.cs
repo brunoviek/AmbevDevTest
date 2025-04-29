@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using MediatR;
 
@@ -49,6 +50,16 @@ public class CreateUserCommand : IRequest<CreateUserResult>
     /// Gets or sets the role of the user.
     /// </summary>
     public UserRole Role { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user's full name information.
+    /// </summary>
+    public CreateUserNameModel? Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user's address information.
+    /// </summary>
+    public CreateUserAddressModel? Address { get; set; }
 
 
     public ValidationResultDetail Validate()

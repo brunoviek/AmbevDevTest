@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Enums;
-using Ambev.DeveloperEvaluation.ORM.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Seed
 {
@@ -21,7 +21,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
         }
 
         /// <summary>
-        /// Executes the data seeding process;
+        /// Executes the data seeding process.
         /// </summary>
         public async Task SeedAsync()
         {
@@ -40,7 +40,24 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                     Email = "admin@admin.com",
                     Phone = "47999756127",
                     Role = UserRole.Admin,
-                    Status = UserStatus.Active
+                    Status = UserStatus.Active,
+                    Name = new CreateUserNameModel
+                    {
+                        Firstname = "Admin",
+                        Lastname = "User"
+                    },
+                    Address = new CreateUserAddressModel
+                    {
+                        Street = "Admin Street",
+                        Number = 100,
+                        City = "Admin City",
+                        Zipcode = "12345-678",
+                        Geolocation = new CreateUserGeolocationModel
+                        {
+                            Latitude = "-23.5505",
+                            Longitude = "-46.6333"
+                        }
+                    }
                 });
             }
 
@@ -54,7 +71,24 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                     Email = "user@user.com",
                     Phone = "47999756127",
                     Role = UserRole.Customer,
-                    Status = UserStatus.Active
+                    Status = UserStatus.Active,
+                    Name = new CreateUserNameModel
+                    {
+                        Firstname = "John",
+                        Lastname = "Doe"
+                    },
+                    Address = new CreateUserAddressModel
+                    {
+                        Street = "Customer Street",
+                        Number = 200,
+                        City = "User City",
+                        Zipcode = "98765-432",
+                        Geolocation = new CreateUserGeolocationModel
+                        {
+                            Latitude = "-22.9068",
+                            Longitude = "-43.1729"
+                        }
+                    }
                 });
             }
 
@@ -68,7 +102,24 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                     Email = "user2@user.com",
                     Phone = "47999756127",
                     Role = UserRole.Customer,
-                    Status = UserStatus.Active
+                    Status = UserStatus.Active,
+                    Name = new CreateUserNameModel
+                    {
+                        Firstname = "Jane",
+                        Lastname = "Smith"
+                    },
+                    Address = new CreateUserAddressModel
+                    {
+                        Street = "Another Street",
+                        Number = 300,
+                        City = "Another City",
+                        Zipcode = "11111-222",
+                        Geolocation = new CreateUserGeolocationModel
+                        {
+                            Latitude = "-15.7801",
+                            Longitude = "-47.9292"
+                        }
+                    }
                 });
             }
         }

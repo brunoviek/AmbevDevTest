@@ -214,12 +214,12 @@ public class UserValidatorTests
     public void Should_Fail_When_Latitude_Is_Invalid_Format()
     {
         var user = UserTestData.GenerateValidUser();
-        user.Address!.Geolocation.Lat = "invalid_latitude";
+        user.Address!.Geolocation.Latitude = "invalid_latitude";
 
         var result = _validator.TestValidate(user);
 
         result.IsValid.Should().BeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Latitude);
     }
 
     /// <summary>
@@ -231,12 +231,12 @@ public class UserValidatorTests
     public void Should_Fail_When_Latitude_Is_Out_Of_Range()
     {
         var user = UserTestData.GenerateValidUser();
-        user.Address!.Geolocation.Lat = "91";
+        user.Address!.Geolocation.Latitude = "91";
 
         var result = _validator.TestValidate(user);
 
         result.IsValid.Should().BeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Latitude);
     }
 
     /// <summary>
@@ -248,12 +248,12 @@ public class UserValidatorTests
     public void Should_Fail_When_Longitude_Is_Invalid_Format()
     {
         var user = UserTestData.GenerateValidUser();
-        user.Address!.Geolocation.Long = "invalid_longitude";
+        user.Address!.Geolocation.Longitude = "invalid_longitude";
 
         var result = _validator.TestValidate(user);
 
         result.IsValid.Should().BeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Longitude);
     }
 
     /// <summary>
@@ -265,12 +265,12 @@ public class UserValidatorTests
     public void Should_Fail_When_Longitude_Is_Out_Of_Range()
     {
         var user = UserTestData.GenerateValidUser();
-        user.Address!.Geolocation.Long = "200";
+        user.Address!.Geolocation.Longitude = "200";
 
         var result = _validator.TestValidate(user);
 
         result.IsValid.Should().BeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Longitude);
     }
 
     /// <summary>
@@ -285,8 +285,8 @@ public class UserValidatorTests
         user.Address!.City = "";
         user.Address.Zipcode = "";
         user.Address.Number = 0;
-        user.Address.Geolocation.Lat = "";
-        user.Address.Geolocation.Long = "";
+        user.Address.Geolocation.Latitude = "";
+        user.Address.Geolocation.Longitude = "";
 
         var result = _validator.TestValidate(user);
 
@@ -294,8 +294,8 @@ public class UserValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Address!.City);
         result.ShouldHaveValidationErrorFor(x => x.Address!.Zipcode);
         result.ShouldHaveValidationErrorFor(x => x.Address!.Number);
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Latitude);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Longitude);
     }
 
     /// <summary>
@@ -310,8 +310,8 @@ public class UserValidatorTests
         user.Address!.Street = "";
         user.Address.Zipcode = "";
         user.Address.Number = 0;
-        user.Address.Geolocation.Lat = "";
-        user.Address.Geolocation.Long = "";
+        user.Address.Geolocation.Latitude = "";
+        user.Address.Geolocation.Longitude = "";
 
         var result = _validator.TestValidate(user);
 
@@ -319,8 +319,8 @@ public class UserValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Address!.Street);
         result.ShouldHaveValidationErrorFor(x => x.Address!.Zipcode);
         result.ShouldHaveValidationErrorFor(x => x.Address!.Number);
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Latitude);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Longitude);
     }
 
     /// <summary>
@@ -335,8 +335,8 @@ public class UserValidatorTests
         user.Address!.Street = "";
         user.Address.City = "";
         user.Address.Zipcode = "";
-        user.Address.Geolocation.Lat = "";
-        user.Address.Geolocation.Long = "";
+        user.Address.Geolocation.Latitude = "";
+        user.Address.Geolocation.Longitude = "";
 
         var result = _validator.TestValidate(user);
 
@@ -344,8 +344,8 @@ public class UserValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Address!.Street);
         result.ShouldHaveValidationErrorFor(x => x.Address!.City);
         result.ShouldHaveValidationErrorFor(x => x.Address!.Zipcode);
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Lat);
-        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Long);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Latitude);
+        result.ShouldHaveValidationErrorFor(x => x.Address!.Geolocation.Longitude);
     }
 
     /// <summary>

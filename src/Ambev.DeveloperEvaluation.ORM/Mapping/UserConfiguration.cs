@@ -57,11 +57,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             address.OwnsOne(a => a.Geolocation, geo =>
             {
-                geo.Property(g => g.Lat)
+                geo.Property(g => g.Latitude)
                     .HasMaxLength(20)
                     .HasColumnName("Latitude");
 
-                geo.Property(g => g.Long)
+                geo.Property(g => g.Longitude)
                     .HasMaxLength(20)
                     .HasColumnName("Longitude");
             });
