@@ -24,6 +24,14 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             {
                 await HandleValidationExceptionAsync(context, ex);
             }
+            catch (KeyNotFoundException ex)
+            {
+                await HandleExceptionAsync(context, StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await HandleExceptionAsync(context, StatusCodes.Status500InternalServerError, ex.Message); //trocar depois para erro generico e não mostrar a stack
+            }
         }
 
         private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
@@ -45,6 +53,19 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             };
 
             return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
+        }
+
+        private static async Task HandleExceptionAsync(HttpContext context, int statusCode, object errorDetails)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            await context.Response.WriteAsJsonAsync(new
+            {
+                StatusCode = statusCode,
+                Errors = errorDetails,
+                Timestamp = DateTime.UtcNow
+            });
         }
     }
 }
