@@ -1,4 +1,6 @@
 using Ambev.DeveloperEvaluation.Application;
+using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
@@ -9,6 +11,7 @@ using Ambev.DeveloperEvaluation.ORM.Extensions;
 using Ambev.DeveloperEvaluation.WebApi.Extensions;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using Ambev.DeveloperEvaluation.WebApi.Seed;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -54,6 +57,10 @@ public class Program
                     typeof(Program).Assembly
                 );
             });
+
+            builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+            var appAssembly = typeof(DeleteUserValidator).Assembly;
+            builder.Services.AddValidatorsFromAssembly(appAssembly);
 
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 

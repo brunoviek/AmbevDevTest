@@ -28,11 +28,11 @@ public static class UserTestData
         .RuleFor(u => u.Phone, f => $"+55{f.Random.Number(11, 99)}{f.Random.Number(100000000, 999999999)}")
         .RuleFor(u => u.Status, f => f.PickRandom(UserStatus.Active, UserStatus.Suspended))
         .RuleFor(u => u.Role, f => f.PickRandom(UserRole.Customer, UserRole.Admin))
-            .RuleFor(u => u.Name, f => new Name
-            {
-                Firstname = f.Name.FirstName(),
-                Lastname = f.Name.LastName()
-            })
+        .RuleFor(u => u.Name, f => new Name
+        {
+            Firstname = f.Name.FirstName(),
+            Lastname = f.Name.LastName()
+        })
         .RuleFor(u => u.Address, f => new Address
         {
             Street = f.Address.StreetName(),
