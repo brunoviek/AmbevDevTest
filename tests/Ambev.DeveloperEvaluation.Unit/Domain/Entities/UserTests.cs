@@ -90,8 +90,8 @@ public class UserTests
                     Number = 0, // Invalid Number
                     Geolocation = new Geolocation
                     {
-                        Lat = "invalid_latitude", // Invalid format
-                        Long = "" // Missing Longitude
+                        Latitude = "invalid_latitude", // Invalid format
+                        Longitude = "" // Missing Longitude
                     }
                 }
         };

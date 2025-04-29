@@ -38,4 +38,14 @@ public interface IUserRepository
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>True if the user was deleted, false if not found</returns>
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a paginated and optionally ordered list of users.
+    /// </summary>
+    /// <param name="page">Page number (default: 1).</param>
+    /// <param name="size">Page size (default: 10).</param>
+    /// <param name="order">Ordering expression (e.g., "username asc, email desc").</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A collection of users.</returns>
+    Task<IEnumerable<User>> GetAllAsync(int page, int size, string? order, CancellationToken cancellationToken = default);
 }
