@@ -12,6 +12,10 @@ using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses;
+using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
+using Ambev.DeveloperEvaluation.Common.Pagination;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 
@@ -53,7 +57,7 @@ public class UsersController : BaseController
         return Created(string.Empty, new ApiResponseWithData<UserResponse>
         {
             Success = true,
-            Message = "User created successfully",
+            Message = "Product created successfully",
             Data = _mapper.Map<UserResponse>(response)
         });
     }
@@ -74,7 +78,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<GetUserQuery>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(_mapper.Map<UserResponse>(response), "User retrieved successfully");
+        return Ok(_mapper.Map<UserResponse>(response), "Product retrieved successfully");
     }
 
     /// <summary>
@@ -93,7 +97,7 @@ public class UsersController : BaseController
         var command = _mapper.Map<DeleteUserCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(_mapper.Map<UserResponse>(response), "User deleted successfully");
+        return Ok(_mapper.Map<UserResponse>(response), "Product deleted successfully");
     }
 
     /// <summary>
@@ -134,6 +138,26 @@ public class UsersController : BaseController
 
         var listUsersResponse = await _mediator.Send(command, cancellationToken);
 
-        return OkPaginated(listUsersResponse, "User retrieved successfully");
+        return OkPaginated(_mapper.Map<PaginatedList<UserResponse>>(listUsersResponse), "Product retrieved successfully");
+    }
+
+    /// <summary>
+    /// Updates an existing user by ID.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user to update.</param>
+    /// <param name="request">The updated user data.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The updated user details.</returns>
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(ApiResponseWithData<UserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
+    {
+        var command = _mapper.Map<UpdateUserCommand>(request);
+        command.Id = id;
+        var response = await _mediator.Send(command, cancellationToken);
+
+        return Ok(_mapper.Map<UserResponse>(response), "Product updated successfully");
     }
 }

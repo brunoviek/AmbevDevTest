@@ -8,7 +8,7 @@ using Xunit;
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users.GetUser.Mappings;
 
 /// <summary>
-/// Contains tests for the GetUserMappingProfile to ensure User entities are correctly mapped to GetUserResult.
+/// Contains tests for the GetUserMappingProfile to ensure Product entities are correctly mapped to GetUserResult.
 /// </summary>
 public class GetUserMappingProfileTests
 {
@@ -25,9 +25,9 @@ public class GetUserMappingProfileTests
     }
 
     /// <summary>
-    /// Tests that a valid User entity is correctly mapped to GetUserResult.
+    /// Tests that a valid Product entity is correctly mapped to GetUserResult.
     /// </summary>
-    [Fact(DisplayName = "Should correctly map User to GetUserResult")]
+    [Fact(DisplayName = "Should correctly map Product to GetUserResult")]
     public void Should_Map_User_To_GetUserResult_Correctly()
     {
         // Arrange

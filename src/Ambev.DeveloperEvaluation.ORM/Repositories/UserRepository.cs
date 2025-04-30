@@ -79,4 +79,11 @@ public class UserRepository : IUserRepository
     {
         return _context.Users.AsNoTracking();
     }
+
+    /// <inheritdoc />
+    public async Task UpdateAsync(User user)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+    }
 }

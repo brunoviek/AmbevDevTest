@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Models;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 
 /// <summary>
-/// Profile for mapping between User entity and CreateUserResponse
+/// Profile for mapping between Product entity and CreateUserResponse
 /// </summary>
 public class CreateUserProfile : Profile
 {
@@ -16,9 +16,9 @@ public class CreateUserProfile : Profile
     public CreateUserProfile()
     {
         CreateMap<CreateUserCommand, User>();
-        CreateMap<CreateUserNameModel, Name>();
-        CreateMap<CreateUserGeolocationModel, Geolocation>();
-        CreateMap<CreateUserAddressModel, Address>();
+        CreateMap<UserNameModel, Name>();
+        CreateMap<UserGeolocationModel, Geolocation>();
+        CreateMap<UserAddressModel, Address>();
         CreateMap<User, UserResult>();
         CreateMap<Address, UserAddressResult>();
         CreateMap<Geolocation, UserGeolocationResult>();

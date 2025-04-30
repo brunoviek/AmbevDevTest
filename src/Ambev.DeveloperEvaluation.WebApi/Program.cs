@@ -1,6 +1,6 @@
 using Ambev.DeveloperEvaluation.Application;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
+using Ambev.DeveloperEvaluation.Application.Users.Events;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
 using Ambev.DeveloperEvaluation.Common.Logging;
 using Ambev.DeveloperEvaluation.Common.Security;
@@ -8,12 +8,14 @@ using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Extensions;
+using Ambev.DeveloperEvaluation.WebApi.Consumers;
 using Ambev.DeveloperEvaluation.WebApi.Extensions;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using Ambev.DeveloperEvaluation.WebApi.Seed;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Rebus.Config;
 using Serilog;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
@@ -45,6 +47,20 @@ public class Program
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
             builder.RegisterDependencies();
+
+            var rabbitMqConnectionString = builder.Configuration["RabbitMq:ConnectionString"];
+            var rabbitMqInputQueue = builder.Configuration["RabbitMq:InputQueue"];
+
+            builder.Services.AutoRegisterHandlersFromAssemblyOf<UserCreatedEventHandler>();
+
+            builder.Services.AddRebus(
+                configure => configure
+                    .Transport(t => t.UseRabbitMq(rabbitMqConnectionString, rabbitMqInputQueue))
+                    .Logging(l => l.Console()),
+                onCreated: async bus => {
+                    await bus.Subscribe<UserRegisteredEvent>();
+                }
+            );
 
             builder.Services.AddTransient<DataSeederService>();
 

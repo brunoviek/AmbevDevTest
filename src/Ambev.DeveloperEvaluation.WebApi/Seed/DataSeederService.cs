@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Models;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Seed
 {
@@ -41,18 +41,18 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                     Phone = "47999756127",
                     Role = UserRole.Admin,
                     Status = UserStatus.Active,
-                    Name = new CreateUserNameModel
+                    Name = new UserNameModel
                     {
                         Firstname = "Admin",
-                        Lastname = "User"
+                        Lastname = "Product"
                     },
-                    Address = new CreateUserAddressModel
+                    Address = new UserAddressModel
                     {
                         Street = "Admin Street",
                         Number = 100,
                         City = "Admin City",
                         Zipcode = "12345-678",
-                        Geolocation = new CreateUserGeolocationModel
+                        Geolocation = new UserGeolocationModel
                         {
                             Latitude = "-23.5505",
                             Longitude = "-46.6333"
@@ -67,23 +67,23 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                 await _mediator.Send(new CreateUserCommand
                 {
                     Username = "user",
-                    Password = "User@123",
+                    Password = "Product@123",
                     Email = "user@user.com",
                     Phone = "47999756127",
                     Role = UserRole.Customer,
                     Status = UserStatus.Active,
-                    Name = new CreateUserNameModel
+                    Name = new UserNameModel
                     {
                         Firstname = "John",
                         Lastname = "Doe"
                     },
-                    Address = new CreateUserAddressModel
+                    Address = new UserAddressModel
                     {
                         Street = "Customer Street",
                         Number = 200,
-                        City = "User City",
+                        City = "Product City",
                         Zipcode = "98765-432",
-                        Geolocation = new CreateUserGeolocationModel
+                        Geolocation = new UserGeolocationModel
                         {
                             Latitude = "-22.9068",
                             Longitude = "-43.1729"
@@ -98,23 +98,23 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                 await _mediator.Send(new CreateUserCommand
                 {
                     Username = "user2",
-                    Password = "User@123",
+                    Password = "Product@123",
                     Email = "user2@user.com",
                     Phone = "47999756127",
                     Role = UserRole.Customer,
                     Status = UserStatus.Active,
-                    Name = new CreateUserNameModel
+                    Name = new UserNameModel
                     {
                         Firstname = "Jane",
                         Lastname = "Smith"
                     },
-                    Address = new CreateUserAddressModel
+                    Address = new UserAddressModel
                     {
                         Street = "Another Street",
                         Number = 300,
                         City = "Another City",
                         Zipcode = "11111-222",
-                        Geolocation = new CreateUserGeolocationModel
+                        Geolocation = new UserGeolocationModel
                         {
                             Latitude = "-15.7801",
                             Longitude = "-47.9292"

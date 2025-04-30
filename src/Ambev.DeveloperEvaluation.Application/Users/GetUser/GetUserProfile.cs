@@ -5,7 +5,7 @@ using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
 
 /// <summary>
-/// Profile for mapping between User entity and GetUserResponse
+/// Profile for mapping between Product entity and GetUserResponse
 /// </summary>
 public class GetUserProfile : Profile
 {

@@ -95,7 +95,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             // Assert
             await act.Should()
                 .ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"User with ID {userId} not found");
+                .WithMessage($"Product with ID {userId} not found");
         }
 
         /// <summary>

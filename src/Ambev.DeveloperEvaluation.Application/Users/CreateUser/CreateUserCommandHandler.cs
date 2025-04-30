@@ -6,6 +6,8 @@ using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Ambev.DeveloperEvaluation.Common.Exceptions;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
+using Rebus.Bus;
+using Ambev.DeveloperEvaluation.Application.Users.Events;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 
@@ -17,18 +19,19 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserR
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IBus _bus;
 
     /// <summary>
     /// Initializes a new instance of CreateUserHandler
     /// </summary>
     /// <param name="userRepository">The user repository</param>
     /// <param name="mapper">The AutoMapper instance</param>
-    /// <param name="validator">The validator for CreateUserCommand</param>
-    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher)
+    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher, IBus bus)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _passwordHasher = passwordHasher;
+        _bus = bus;
     }
 
     /// <summary>
@@ -47,12 +50,15 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserR
 
         var existingUser = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
         if (existingUser != null)
-            throw new BadRequestException($"User with email {command.Email} already exists");
+            throw new BadRequestException($"Product with email {command.Email} already exists");
 
         var user = _mapper.Map<User>(command);
         user.Password = _passwordHasher.HashPassword(command.Password);
 
         var createdUser = await _userRepository.CreateAsync(user, cancellationToken);
+
+        await _bus.Publish(new UserRegisteredEvent(createdUser));
+
         var result = _mapper.Map<UserResult>(createdUser);
         return result;
     }

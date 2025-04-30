@@ -7,6 +7,7 @@ using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
+using Rebus.Bus;
 using Xunit;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
@@ -20,6 +21,7 @@ public class CreateUserHandlerTests
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
     private readonly CreateUserCommandHandler _handler;
+    private readonly IBus _bus;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateUserHandlerTests"/> class.
@@ -30,7 +32,8 @@ public class CreateUserHandlerTests
         _userRepository = Substitute.For<IUserRepository>();
         _mapper = Substitute.For<IMapper>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
-        _handler = new CreateUserCommandHandler(_userRepository, _mapper, _passwordHasher);
+        _bus = Substitute.For<IBus>();
+        _handler = new CreateUserCommandHandler(_userRepository, _mapper, _passwordHasher, _bus);
     }
 
     /// <summary>

@@ -1,12 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
-using Ambev.DeveloperEvaluation.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ambev.DeveloperEvaluation.Domain.Enums;
 
-namespace Ambev.DeveloperEvaluation.Application.Users.Shared.Results
+namespace Ambev.DeveloperEvaluation.Application.Users.Shared.Models
 {
     /// <summary>
     /// Base class for user-related commands containing common user data fields.
@@ -46,11 +40,11 @@ namespace Ambev.DeveloperEvaluation.Application.Users.Shared.Results
         /// <summary>
         /// Gets or sets the user's full name information.
         /// </summary>
-        public CreateUserNameModel? Name { get; set; }
+        public UserNameModel? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the user's address information.
         /// </summary>
-        public CreateUserAddressModel? Address { get; set; }
+        public UserAddressModel? Address { get; set; }
     }
 }
