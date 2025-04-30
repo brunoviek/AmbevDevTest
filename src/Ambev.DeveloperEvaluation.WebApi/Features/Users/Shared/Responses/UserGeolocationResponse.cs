@@ -1,9 +1,9 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Responses
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses
 {
     /// <summary>
     /// Represents the geolocation (latitude and longitude) of the user's address.
     /// </summary>
-    public class GetUserGeolocationResponse
+    public class UserGeolocationResponse
     {
         /// <summary>
         /// Gets or sets the latitude coordinate.

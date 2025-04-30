@@ -74,56 +74,9 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    /// <inheritdoc />
-    public async Task<IEnumerable<User>> GetAllAsync(int page, int size, string? order, CancellationToken cancellationToken = default)
+    /// <inheritdoc/>
+    public IQueryable<User> QueryAll()
     {
-        var UsersQuery = _context.Users.AsNoTracking().AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(order))
-        {
-            UsersQuery = UsersQuery.OrderBy(ValidateOrderFields(order));
-        }
-        else
-        {
-            UsersQuery = UsersQuery.OrderBy(u => u.Username);
-        }
-
-        var users = await UsersQuery
-            .Skip((page - 1) * size)
-            .Take(size)
-            .ToListAsync(cancellationToken);
-
-        return users;
-    }
-
-    private static readonly HashSet<string> AllowedOrderFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-    {
-        "Username",
-        "Email",
-        "Phone",
-        "Status",
-        "Role",
-        "CreatedAt",
-        "FirstName",
-        "LastName",
-        "City",
-        "Street",
-        "Zipcode"
-    };
-
-    private static string ValidateOrderFields(string order)
-    {
-        var fields = order.Split(',');
-
-        foreach (var field in fields)
-        {
-            var fieldName = field.Trim().Split(' ')[0];
-            if (!AllowedOrderFields.Contains(fieldName))
-            {
-                throw new ArgumentException($"Invalid ordering field: {fieldName}");
-            }
-        }
-
-        return order;
+        return _context.Users.AsNoTracking();
     }
 }

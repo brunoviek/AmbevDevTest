@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Common.Exceptions;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using FluentValidation;
 using System.Text.Json;
@@ -27,6 +28,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Middleware
             catch (KeyNotFoundException ex)
             {
                 await HandleExceptionAsync(context, StatusCodes.Status404NotFound, ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                await HandleExceptionAsync(context, StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {

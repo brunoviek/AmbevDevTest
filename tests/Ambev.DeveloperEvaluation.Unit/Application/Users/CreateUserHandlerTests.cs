@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
@@ -11,14 +12,14 @@ using Xunit;
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users;
 
 /// <summary>
-/// Contains unit tests for the <see cref="CreateUserHandler"/> class.
+/// Contains unit tests for the <see cref="CreateUserCommandHandler"/> class.
 /// </summary>
 public class CreateUserHandlerTests
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _passwordHasher;
-    private readonly CreateUserHandler _handler;
+    private readonly CreateUserCommandHandler _handler;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateUserHandlerTests"/> class.
@@ -29,7 +30,7 @@ public class CreateUserHandlerTests
         _userRepository = Substitute.For<IUserRepository>();
         _mapper = Substitute.For<IMapper>();
         _passwordHasher = Substitute.For<IPasswordHasher>();
-        _handler = new CreateUserHandler(_userRepository, _mapper, _passwordHasher);
+        _handler = new CreateUserCommandHandler(_userRepository, _mapper, _passwordHasher);
     }
 
     /// <summary>
@@ -48,17 +49,26 @@ public class CreateUserHandlerTests
             Email = command.Email,
             Phone = command.Phone,
             Status = command.Status,
-            Role = command.Role
+            Role = command.Role,
+            Address = _mapper.Map<Address>(command.Address),
+            Name = _mapper.Map<Name>(command.Name),
         };
 
-        var result = new CreateUserResult
+        var result = new UserResult()
         {
             Id = user.Id,
+            Username = user.Username,
+            Phone = user.Phone,
+            Status = user.Status,
+            Role = user.Role,
+            Email = user.Email,
+            Address = _mapper.Map<UserAddressResult>(user.Address),
+            Name = _mapper.Map<UserNameResult>(user.Name)
         };
 
 
         _mapper.Map<User>(command).Returns(user);
-        _mapper.Map<CreateUserResult>(user).Returns(result);
+        _mapper.Map<UserResult>(user).Returns(result);
 
         _userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
             .Returns(user);

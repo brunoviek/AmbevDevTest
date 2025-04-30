@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.Application.Users.Results;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using AutoMapper;
 using FluentAssertions;
@@ -56,7 +56,7 @@ public class GetUserMappingProfileTests
             }
         };
 
-        var result = _mapper.Map<GetUserResult>(user);
+        var result = _mapper.Map<UserResult>(user);
 
         result.Should().NotBeNull();
         result.Id.Should().Be(user.Id);

@@ -10,7 +10,8 @@ using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.Responses;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 
@@ -42,18 +43,18 @@ public class UsersController : BaseController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The created user details</returns>
     [HttpPost]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponseWithData<UserResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var command = _mapper.Map<CreateUserCommand>(request);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Created(string.Empty, new ApiResponseWithData<GetUserResponse>
+        return Created(string.Empty, new ApiResponseWithData<UserResponse>
         {
             Success = true,
             Message = "User created successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
+            Data = _mapper.Map<UserResponse>(response)
         });
     }
 
@@ -64,21 +65,16 @@ public class UsersController : BaseController
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The user details if found</returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponseWithData<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUser([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var request = new GetUserRequest { Id = id };
-        var command = _mapper.Map<GetUserCommand>(request.Id);
+        var command = _mapper.Map<GetUserQuery>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetUserResponse>
-        {
-            Success = true,
-            Message = "User retrieved successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
-        });
+        return Ok(_mapper.Map<UserResponse>(response), "User retrieved successfully");
     }
 
     /// <summary>
@@ -88,7 +84,7 @@ public class UsersController : BaseController
     /// <param name="cancellationToken">Cancellation token</param>
     //// <returns>The user details if found</returns>
     [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponseWithData<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -97,24 +93,30 @@ public class UsersController : BaseController
         var command = _mapper.Map<DeleteUserCommand>(request.Id);
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(new ApiResponseWithData<GetUserResponse>
-        {
-            Success = true,
-            Message = "User deleted successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
-        });
+        return Ok(_mapper.Map<UserResponse>(response), "User deleted successfully");
     }
 
     /// <summary>
     /// Retrieves a paginated list of users.
     /// </summary>
-    /// <param name="_page">Page number for pagination (optional, default: 1)</param>
-    /// <param name="_size">Number of items per page (optional, default: 10)</param>
-    /// <param name="_order">Ordering of results (e.g., "username asc, email desc") (optional)</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Paginated list of users</returns>
+    /// <param name="_page">
+    /// The page number to retrieve (default is 1).
+    /// </param>
+    /// <param name="_size">
+    /// The number of items per page (default is 10).
+    /// </param>
+    /// <param name="_order">
+    /// A sorting expression, e.g. "Username asc,Email desc" (optional).
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    /// </param>
+    /// <returns>
+    /// An <see cref="ApiResponseWithData{PaginatedResponse{UserResponse}}"/> containing
+    /// the requested page of users along with pagination metadata.
+    /// </returns>
     [HttpGet]
-    [ProducesResponseType(typeof(ApiResponseWithData<IEnumerable<GetUserResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PaginatedResponse<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ListUsers(
         [FromQuery(Name = "_page")] int _page = 1,
@@ -122,26 +124,16 @@ public class UsersController : BaseController
         [FromQuery(Name = "_order")] string? _order = null,
         CancellationToken cancellationToken = default)
     {
-        // Aqui você criaria o seu request/query para buscar os usuários paginados
-        var query = new ListUsersRequest
-        {
-            Page = _page,
-            Size = _size,
-            Order = _order
-        };
+        var command = _mapper.Map<ListUsersQuery>(
+            new ListUsersRequest
+            {
+                Page = _page,
+                Size = _size,
+                Order = _order
+            });
 
-        // Opcionalmente validar o request aqui se desejar
+        var listUsersResponse = await _mediator.Send(command, cancellationToken);
 
-        var command = _mapper.Map<ListUsersCommand>(query);
-        var result = await _mediator.Send(command, cancellationToken);
-
-        var response = _mapper.Map<IEnumerable<GetUserResponse>>(result);
-
-        return Ok(new ApiResponseWithData<IEnumerable<GetUserResponse>>
-        {
-            Success = true,
-            Message = "Users retrieved successfully",
-            Data = response
-        });
+        return OkPaginated(listUsersResponse, "User retrieved successfully");
     }
 }

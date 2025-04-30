@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
-using Ambev.DeveloperEvaluation.Application.Users.Results;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
@@ -18,12 +18,12 @@ using Xunit;
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users
 {
     /// <summary>
-    /// Contains unit tests for the <see cref="DeleteUserHandler"/> class.
+    /// Contains unit tests for the <see cref="DeleteUserCommandHandler"/> class.
     /// </summary>
     public class DeleteUserHandlerTests
     {
         private readonly IUserRepository _userRepository;
-        private readonly DeleteUserHandler _handler;
+        private readonly DeleteUserCommandHandler _handler;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
         {
             _userRepository = Substitute.For<IUserRepository>();
             _mapper = Substitute.For<IMapper>();
-            _handler = new DeleteUserHandler(_userRepository, _mapper);
+            _handler = new DeleteUserCommandHandler(_userRepository, _mapper);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
         /// then ensures:
         /// 1. GetByIdAsync is called once.
         /// 2. DeleteAsync is called once.
-        /// 3. The entity is mapped to <see cref="GetUserResult"/> and returned.
+        /// 3. The entity is mapped to <see cref="UserResult"/> and returned.
         /// </summary>
         [Fact(DisplayName = "Given valid ID When handling Then returns mapped GetUserResult")]
         public async Task Handle_ValidRequest_ReturnsMappedGetUserResult_UsingTestData()
@@ -64,8 +64,8 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
                 .Returns(Task.FromResult(true));
 
             _mapper
-                .Map<GetUserResult>(Arg.Any<User>())
-                .Returns(new GetUserResult());
+                .Map<UserResult>(Arg.Any<User>())
+                .Returns(new UserResult());
 
             // Act
             await _handler.Handle(command, CancellationToken.None);
@@ -73,7 +73,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             // Assert: verify only that the dependencies were invoked
             await _userRepository.Received(1).GetByIdAsync(userId, CancellationToken.None);
             await _userRepository.Received(1).DeleteAsync(userId, CancellationToken.None);
-            _mapper.Received(1).Map<GetUserResult>(userEntity);
+            _mapper.Received(1).Map<UserResult>(userEntity);
         }
 
         /// <summary>

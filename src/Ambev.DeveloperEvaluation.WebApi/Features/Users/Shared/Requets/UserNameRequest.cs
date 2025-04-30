@@ -1,9 +1,9 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Responses
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Requets
 {
     /// <summary>
-    /// Represents the user's name details in the response.
+    /// Request for User Name
     /// </summary>
-    public class GetUserNameResponse
+    public class UserNameRequest
     {
         /// <summary>
         /// Gets or sets the user's first name.
