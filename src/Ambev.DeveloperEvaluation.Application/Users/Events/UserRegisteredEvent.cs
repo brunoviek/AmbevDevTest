@@ -1,6 +1,6 @@
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
 
-namespace Ambev.DeveloperEvaluation.Domain.Events
+namespace Ambev.DeveloperEvaluation.Application.Users.Events
 {
     public class UserRegisteredEvent
     {

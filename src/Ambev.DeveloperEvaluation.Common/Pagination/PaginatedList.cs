@@ -28,4 +28,9 @@ public class PaginatedList<T> : List<T>
         var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
         return new PaginatedList<T>(items, count, pageNumber, pageSize);
     }
+
+    public PaginatedList()
+    {
+        
+    }
 }

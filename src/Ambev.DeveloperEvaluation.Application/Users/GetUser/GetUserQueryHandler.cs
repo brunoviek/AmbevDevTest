@@ -38,7 +38,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserResult>
     {
         var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
         if (user == null)
-            throw new KeyNotFoundException($"User with ID {request.Id} not found");
+            throw new KeyNotFoundException($"Product with ID {request.Id} not found");
 
         return _mapper.Map<UserResult>(user);
     }

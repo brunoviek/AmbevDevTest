@@ -49,4 +49,10 @@ public interface IUserRepository
     /// ready for further query composition and eventual execution via EF Core.
     /// </returns>
     IQueryable<User> QueryAll();
+
+    /// <summary>
+    /// Updates an existing user in the data store.
+    /// </summary>
+    /// <param name="user">The user entity with updated data.</param>
+    Task UpdateAsync(User user);
 }

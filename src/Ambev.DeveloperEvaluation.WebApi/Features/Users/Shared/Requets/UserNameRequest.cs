@@ -1,7 +1,7 @@
 ﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Requets
 {
     /// <summary>
-    /// Request for User Name
+    /// Request for Product Name
     /// </summary>
     public class UserNameRequest
     {

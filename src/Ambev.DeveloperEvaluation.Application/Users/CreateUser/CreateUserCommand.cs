@@ -1,7 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
+﻿using Ambev.DeveloperEvaluation.Application.Users.Shared.Models;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
-using Ambev.DeveloperEvaluation.Common.Validation;
-using Ambev.DeveloperEvaluation.Domain.Enums;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser

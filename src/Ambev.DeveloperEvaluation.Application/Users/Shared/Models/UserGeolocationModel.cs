@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models
+namespace Ambev.DeveloperEvaluation.Application.Users.Shared.Models
 {
     /// <summary>
     /// Represents the geolocation (latitude and longitude) for user address creation.
     /// </summary>
-    public class CreateUserGeolocationModel
+    public class UserGeolocationModel
     {
         /// <summary>
         /// Gets or sets the latitude coordinate.

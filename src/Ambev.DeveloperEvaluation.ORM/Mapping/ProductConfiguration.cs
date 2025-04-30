@@ -16,7 +16,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.ToTable("Products");
+            builder.ToTable("Products", "store");
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
@@ -27,7 +27,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .HasMaxLength(200);
 
             builder.Property(p => p.Price)
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType("numeric(18,2)");
 
             builder.Property(p => p.Description)
                 .HasMaxLength(1000);
@@ -37,13 +37,13 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
 
             builder.Property(p => p.Image)
                 .IsRequired()
-                .HasColumnType("nvarchar(max)");
+                .HasColumnType("text");
 
             builder.OwnsOne(p => p.Rating, r =>
             {
                 r.Property(r => r.Rate)
                     .HasColumnName("Rate")
-                    .HasColumnType("decimal(5,2)");
+                    .HasColumnType("numeric(5,2)");
 
                 r.Property(r => r.Count)
                     .HasColumnName("Count");

@@ -23,6 +23,41 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products", "store");
+                });
+
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -71,6 +106,33 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.ToTable("Users", "auth");
                 });
 
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Product.Product", b =>
+                {
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.Product.Rating", "Rating", b1 =>
+                        {
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("Count")
+                                .HasColumnType("integer")
+                                .HasColumnName("Count");
+
+                            b1.Property<double>("Rate")
+                                .HasColumnType("numeric(5,2)")
+                                .HasColumnName("Rate");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Products", "store");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.Navigation("Rating")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User.User", b =>
                 {
                     b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.User.Address", "Address", b1 =>
@@ -114,13 +176,13 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                                         .ValueGeneratedOnAdd()
                                         .HasColumnType("uuid");
 
-                                    b2.Property<string>("Lat")
+                                    b2.Property<string>("Latitude")
                                         .IsRequired()
                                         .HasMaxLength(20)
                                         .HasColumnType("character varying(20)")
                                         .HasColumnName("Latitude");
 
-                                    b2.Property<string>("Long")
+                                    b2.Property<string>("Longitude")
                                         .IsRequired()
                                         .HasMaxLength(20)
                                         .HasColumnType("character varying(20)")

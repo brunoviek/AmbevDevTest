@@ -125,7 +125,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Auth
         }
 
         /// <summary>
-        /// Tests that inactive user throws UnauthorizedAccessException with "User is not active".
+        /// Tests that inactive user throws UnauthorizedAccessException with "Product is not active".
         /// </summary>
         [Fact]
         public async Task Handle_InactiveUser_ThrowsUnauthorizedAccessException()
@@ -145,7 +145,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Auth
 
             // Assert
             await act.Should().ThrowAsync<UnauthorizedAccessException>()
-                .WithMessage("User is not active");
+                .WithMessage("Product is not active");
         }
     }
 }

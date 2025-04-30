@@ -1,4 +1,5 @@
 using Ambev.DeveloperEvaluation.Domain.Enums;
+using System.Text.Json.Serialization;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses;
 
@@ -30,11 +31,13 @@ public class UserResponse
     /// <summary>
     /// The user's role in the system
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public UserRole Role { get; set; }
 
     /// <summary>
     /// The current status of the user
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public UserStatus Status { get; set; }
 
     /// <summary>

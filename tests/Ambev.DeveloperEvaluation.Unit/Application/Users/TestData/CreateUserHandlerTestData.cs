@@ -1,5 +1,5 @@
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Models;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
 
@@ -14,17 +14,17 @@ public static class CreateUserHandlerTestData
 {
 
     // Faker for Name model
-    private static readonly Faker<CreateUserNameModel> nameFaker = new Faker<CreateUserNameModel>()
+    private static readonly Faker<UserNameModel> nameFaker = new Faker<UserNameModel>()
         .RuleFor(m => m.Firstname, f => f.Name.FirstName())
         .RuleFor(m => m.Lastname, f => f.Name.LastName());
 
     // Faker for Geolocation model
-    private static readonly Faker<CreateUserGeolocationModel> geoFaker = new Faker<CreateUserGeolocationModel>()
+    private static readonly Faker<UserGeolocationModel> geoFaker = new Faker<UserGeolocationModel>()
         .RuleFor(m => m.Latitude, f => f.Address.Latitude().ToString())
         .RuleFor(m => m.Longitude, f => f.Address.Longitude().ToString());
 
     // Faker for Address model (includes geolocation)
-    private static readonly Faker<CreateUserAddressModel> addressFaker = new Faker<CreateUserAddressModel>()
+    private static readonly Faker<UserAddressModel> addressFaker = new Faker<UserAddressModel>()
         .RuleFor(m => m.Street, f => f.Address.StreetName())
         .RuleFor(m => m.Number, f => f.Random.Number(1, 1000))
         .RuleFor(m => m.City, f => f.Address.City())
@@ -43,19 +43,19 @@ public static class CreateUserHandlerTestData
         .RuleFor(u => u.Address, _ => addressFaker.Generate());
 
     /// <summary>
-    /// Generates a valid <see cref="CreateUserNameModel"/>.
+    /// Generates a valid <see cref="UserNameModel"/>.
     /// </summary>
-    public static CreateUserNameModel GenerateNameModel() => nameFaker.Generate();
+    public static UserNameModel GenerateNameModel() => nameFaker.Generate();
 
     /// <summary>
-    /// Generates a valid <see cref="CreateUserGeolocationModel"/>.
+    /// Generates a valid <see cref="UserGeolocationModel"/>.
     /// </summary>
-    public static CreateUserGeolocationModel GenerateGeolocationModel() => geoFaker.Generate();
+    public static UserGeolocationModel GenerateGeolocationModel() => geoFaker.Generate();
 
     /// <summary>
-    /// Generates a valid <see cref="CreateUserAddressModel"/>.
+    /// Generates a valid <see cref="UserAddressModel"/>.
     /// </summary>
-    public static CreateUserAddressModel GenerateAddressModel() => addressFaker.Generate();
+    public static UserAddressModel GenerateAddressModel() => addressFaker.Generate();
 
     /// <summary>
     /// Generates a valid <see cref="CreateUserCommand"/> including nested name and address.

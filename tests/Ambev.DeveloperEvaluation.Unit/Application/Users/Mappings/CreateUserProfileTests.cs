@@ -1,13 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
-using Ambev.DeveloperEvaluation.Domain.Enums;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
@@ -35,7 +28,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
         /// <summary>
         /// Tests that the Name model maps correctly.
         /// </summary>
-        [Fact(DisplayName = "Should map CreateUserNameModel to Name correctly")]
+        [Fact(DisplayName = "Should map UserNameModel to Name correctly")]
         public void Should_Map_CreateUserNameModel_To_Name()
         {
             var model = CreateUserHandlerTestData.GenerateNameModel();
@@ -47,7 +40,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
         /// <summary>
         /// Tests that the Geolocation model maps correctly.
         /// </summary>
-        [Fact(DisplayName = "Should map CreateUserGeolocationModel to Geolocation correctly")]
+        [Fact(DisplayName = "Should map UserGeolocationModel to Geolocation correctly")]
         public void Should_Map_CreateUserGeolocationModel_To_Geolocation()
         {
             var model = CreateUserHandlerTestData.GenerateGeolocationModel();
@@ -73,9 +66,9 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
         }
 
         /// <summary>
-        /// Tests that a CreateUserCommand maps to a User entity correctly, including nested models.
+        /// Tests that a CreateUserCommand maps to a Product entity correctly, including nested models.
         /// </summary>
-        [Fact(DisplayName = "Should map CreateUserCommand to User correctly using test data")]
+        [Fact(DisplayName = "Should map CreateUserCommand to Product correctly using test data")]
         public void Should_Map_CreateUserCommand_To_User()
         {
             var command = CreateUserHandlerTestData.GenerateValidCommand();
@@ -100,9 +93,9 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
         }
 
         /// <summary>
-        /// Tests that a User entity maps to UserResult correctly.
+        /// Tests that a Product entity maps to UserResult correctly.
         /// </summary>
-        [Fact(DisplayName = "Should map User to UserResult correctly")]
+        [Fact(DisplayName = "Should map Product to UserResult correctly")]
         public void Should_Map_User_To_UserResult()
         {
             var id = Guid.NewGuid();

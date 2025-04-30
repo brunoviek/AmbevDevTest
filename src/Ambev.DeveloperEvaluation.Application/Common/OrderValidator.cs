@@ -26,6 +26,17 @@ namespace Ambev.DeveloperEvaluation.Application.Common
             "Zipcode"
         };
 
+        // Fields allowed for product sorting
+        private static readonly ISet<string> AllowedProductFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "id",
+            "title",
+            "price",
+            "category",
+            "rate",
+            "count"
+        };
+
         /// <summary>
         /// Validates a user-specific sorting expression against predefined allowed fields.
         /// </summary>
@@ -40,6 +51,21 @@ namespace Ambev.DeveloperEvaluation.Application.Common
         /// </exception>
         public static string ValidateUserOrderFields(string orderBy)
             => Validate(orderBy, AllowedUserFields);
+
+        /// <summary>
+        /// Validates a product-specific sorting expression against predefined allowed fields.
+        /// </summary>
+        /// <param name="orderBy">
+        /// The sorting expression supplied by the client, e.g., "Email desc,CreatedAt asc".
+        /// </param>
+        /// <returns>
+        /// The original <paramref name="orderBy"/> string if validation succeeds.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when the expression contains field names not present in the whitelist.
+        /// </exception>
+        public static string ValidateProductOrderFields(string orderBy)
+            => Validate(orderBy, AllowedProductFields);
 
         // validate method
         private static string Validate(string orderBy, IEnumerable<string> allowedFields)

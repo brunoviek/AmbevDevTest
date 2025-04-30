@@ -1,8 +1,5 @@
 using AutoMapper;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Requets;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models;
-using Ambev.DeveloperEvaluation.Application.Users.Shared;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
 

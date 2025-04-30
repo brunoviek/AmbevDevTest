@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Users.CreateUser.Models
+namespace Ambev.DeveloperEvaluation.Application.Users.Shared.Models
 {
     /// <summary>
     /// Represents the user's full name information for user creation.
     /// </summary>
-    public class CreateUserNameModel
+    public class UserNameModel
     {
         /// <summary>
         /// Gets or sets the user's first name.

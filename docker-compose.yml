@@ -24,6 +24,8 @@
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=projetinho
       - ConnectionStrings__DefaultConnection=Host=ambev_developer_evaluation_database;Port=5432;Database=developer_evaluation;Username=developer;Password=ev@luAt10n
+      - RabbitMq__ConnectionString=amqp://guest:guest@ambev.developerevaluation.rabbitmq
+      - RabbitMq__InputQueue=ambevdev.webapi      
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -33,6 +35,7 @@
       - ./aspnetapp.pfx:/https/aspnetapp.pfx:ro
     depends_on:
       - ambev.developerevaluation.database
+      - ambev.developerevaluation.rabbitmq      
 
   ambev.developerevaluation.nosql:
     container_name: ambev_developer_evaluation_nosql
@@ -49,6 +52,16 @@
     command: redis-server --requirepass ev@luAt10n
     ports:
       - "6379:6379"
+      
+  ambev.developerevaluation.rabbitmq:
+    container_name: ambev_developer_evaluation_rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest      
 
  volumes:
   postgres_data:
