@@ -12,49 +12,53 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 /// </summary>
 public static class CreateUserHandlerTestData
 {
-    /// <summary>
-    /// Configures the Faker to generate valid User entities.
-    /// The generated users will have valid:
-    /// - Username (using internet usernames)
-    /// - Password (meeting complexity requirements)
-    /// - Email (valid format)
-    /// - Phone (Brazilian format)
-    /// - Status (Active or Suspended)
-    /// - Role (Customer or Admin)
-    /// </summary>
-    private static readonly Faker<CreateUserCommand> createUserHandlerFaker = new Faker<CreateUserCommand>()
+
+    // Faker for Name model
+    private static readonly Faker<CreateUserNameModel> nameFaker = new Faker<CreateUserNameModel>()
+        .RuleFor(m => m.Firstname, f => f.Name.FirstName())
+        .RuleFor(m => m.Lastname, f => f.Name.LastName());
+
+    // Faker for Geolocation model
+    private static readonly Faker<CreateUserGeolocationModel> geoFaker = new Faker<CreateUserGeolocationModel>()
+        .RuleFor(m => m.Latitude, f => f.Address.Latitude().ToString())
+        .RuleFor(m => m.Longitude, f => f.Address.Longitude().ToString());
+
+    // Faker for Address model (includes geolocation)
+    private static readonly Faker<CreateUserAddressModel> addressFaker = new Faker<CreateUserAddressModel>()
+        .RuleFor(m => m.Street, f => f.Address.StreetName())
+        .RuleFor(m => m.Number, f => f.Random.Number(1, 1000))
+        .RuleFor(m => m.City, f => f.Address.City())
+        .RuleFor(m => m.Zipcode, f => f.Address.ZipCode())
+        .RuleFor(m => m.Geolocation, _ => geoFaker.Generate());
+
+    // Faker for CreateUserCommand (includes name and address models)
+    private static readonly Faker<CreateUserCommand> commandFaker = new Faker<CreateUserCommand>()
         .RuleFor(u => u.Username, f => f.Internet.UserName())
         .RuleFor(u => u.Password, f => $"Test@{f.Random.Number(100, 999)}")
         .RuleFor(u => u.Email, f => f.Internet.Email())
         .RuleFor(u => u.Phone, f => $"+55{f.Random.Number(11, 99)}{f.Random.Number(100000000, 999999999)}")
         .RuleFor(u => u.Status, f => f.PickRandom(UserStatus.Active, UserStatus.Suspended))
         .RuleFor(u => u.Role, f => f.PickRandom(UserRole.Customer, UserRole.Admin))
-        .RuleFor(u => u.Name, f => new CreateUserNameModel
-        {
-            Firstname = f.Name.FirstName(),
-            Lastname = f.Name.LastName()
-        })
-        .RuleFor(u => u.Address, f => new CreateUserAddressModel
-        {
-            Street = f.Address.StreetName(),
-            Number = f.Random.Number(1, 10000),
-            City = f.Address.City(),
-            Zipcode = f.Address.ZipCode(),
-            Geolocation = new CreateUserGeolocationModel
-            {
-                Latitude = f.Address.Latitude().ToString(),
-                Longitude = f.Address.Longitude().ToString()
-            }
-        });
+        .RuleFor(u => u.Name, _ => nameFaker.Generate())
+        .RuleFor(u => u.Address, _ => addressFaker.Generate());
 
     /// <summary>
-    /// Generates a valid User entity with randomized data.
-    /// The generated user will have all properties populated with valid values
-    /// that meet the system's validation requirements.
+    /// Generates a valid <see cref="CreateUserNameModel"/>.
     /// </summary>
-    /// <returns>A valid User entity with randomly generated data.</returns>
-    public static CreateUserCommand GenerateValidCommand()
-    {
-        return createUserHandlerFaker.Generate();
-    }
+    public static CreateUserNameModel GenerateNameModel() => nameFaker.Generate();
+
+    /// <summary>
+    /// Generates a valid <see cref="CreateUserGeolocationModel"/>.
+    /// </summary>
+    public static CreateUserGeolocationModel GenerateGeolocationModel() => geoFaker.Generate();
+
+    /// <summary>
+    /// Generates a valid <see cref="CreateUserAddressModel"/>.
+    /// </summary>
+    public static CreateUserAddressModel GenerateAddressModel() => addressFaker.Generate();
+
+    /// <summary>
+    /// Generates a valid <see cref="CreateUserCommand"/> including nested name and address.
+    /// </summary>
+    public static CreateUserCommand GenerateValidCommand() => commandFaker.Generate();
 }

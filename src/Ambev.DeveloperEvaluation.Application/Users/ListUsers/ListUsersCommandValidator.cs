@@ -4,11 +4,11 @@ using FluentValidation;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers
 {
     /// <summary>
-    /// Validator for <see cref="ListUsersCommand"/>.
+    /// Validator for <see cref="ListUsersQuery"/>.
     /// Ensures pagination parameters are valid and the optional Order string
     /// follows "field1 asc, field2 desc" pattern.
     /// </summary>
-    public class ListUsersCommandValidator : AbstractValidator<ListUsersCommand>
+    public class ListUsersCommandValidator : AbstractValidator<ListUsersQuery>
     {
         public ListUsersCommandValidator()
         {

@@ -7,13 +7,13 @@ using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser
 {
-    public class AuthenticateUserHandler : IRequestHandler<AuthenticateUserCommand, AuthenticateUserResult>
+    public class AuthenticateUserCommandHandler : IRequestHandler<AuthenticateUserCommand, AuthenticateUserResult>
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AuthenticateUserHandler(
+        public AuthenticateUserCommandHandler(
             IUserRepository userRepository,
             IPasswordHasher passwordHasher,
             IJwtTokenGenerator jwtTokenGenerator)

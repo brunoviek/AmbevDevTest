@@ -1,4 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
+using Ambev.DeveloperEvaluation.Common.Pagination;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers
@@ -12,7 +14,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers
         /// Initializes the mappings for ListUsers feature
         /// </summary>
         public ListUsersProfile() {
-            CreateMap<ListUsersRequest, ListUsersCommand>();
+            CreateMap<ListUsersRequest, ListUsersQuery>();
         }
     }
 }

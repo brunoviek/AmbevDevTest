@@ -1,9 +1,9 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Responses
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses
 {
     /// <summary>
     /// Represents the user's address details in the response, including geolocation.
     /// </summary>
-    public class GetUserAddressResponse
+    public class UserAddressResponse
     {
         /// <summary>
         /// Gets or sets the street of the address.
@@ -28,6 +28,6 @@
         /// <summary>
         /// Gets or sets the geolocation details of the address.
         /// </summary>
-        public GetUserGeolocationResponse? Geolocation { get; set; }
+        public UserGeolocationResponse? Geolocation { get; set; }
     }
 }

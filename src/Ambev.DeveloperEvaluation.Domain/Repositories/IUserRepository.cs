@@ -40,12 +40,13 @@ public interface IUserRepository
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Retrieves a paginated and optionally ordered list of users.
+    /// Returns the base users query as an <see cref="IQueryable{User}"/>,
+    /// with change tracking disabled (<c>AsNoTracking</c>),
+    /// allowing filters, sorting, and pagination to be composed before execution.
     /// </summary>
-    /// <param name="page">Page number (default: 1).</param>
-    /// <param name="size">Page size (default: 10).</param>
-    /// <param name="order">Ordering expression (e.g., "username asc, email desc").</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    /// <returns>A collection of users.</returns>
-    Task<IEnumerable<User>> GetAllAsync(int page, int size, string? order, CancellationToken cancellationToken = default);
+    /// <returns>
+    /// An <see cref="IQueryable{User}"/> representing all users in the database,
+    /// ready for further query composition and eventual execution via EF Core.
+    /// </returns>
+    IQueryable<User> QueryAll();
 }
