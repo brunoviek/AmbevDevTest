@@ -10,6 +10,7 @@ using AutoMapper;
 using MediatR;
 using System.Linq.Dynamic.Core;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
+using AutoMapper.QueryableExtensions;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
 {
@@ -44,26 +45,20 @@ namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
             ListUsersQuery request,
             CancellationToken cancellationToken)
         {
-            var query = _userRepository.QueryAll();
+            var orderBy = !string.IsNullOrWhiteSpace(request.Order)
+                ? OrderValidator.ValidateUserOrderFields(request.Order)
+                : nameof(User.Username);
 
-            if (!string.IsNullOrWhiteSpace(request.Order))
-                query = query.OrderBy(OrderValidator.ValidateUserOrderFields(request.Order));
-            else
-                query = query.OrderBy(u => u.Username);
+            var query = _userRepository
+                .QueryAll()
+                .OrderBy(orderBy)
+                .ProjectTo<UserResult>(_mapper.ConfigurationProvider);
 
-
-            var pagedUsers = await PaginatedList<User>
-                .CreateAsync(query, request.Page, request.Size, cancellationToken);
-
-            var results = pagedUsers
-                .Select(u => _mapper.Map<UserResult>(u))
-                .ToList();
-
-            return new PaginatedList<UserResult>(
-                results,
-                pagedUsers.TotalCount,
-                pagedUsers.CurrentPage,
-                pagedUsers.PageSize);
+            return await PaginatedList<UserResult>.CreateAsync(
+                query,
+                request.Page,
+                request.Size,
+                cancellationToken);
         }
     }
 }

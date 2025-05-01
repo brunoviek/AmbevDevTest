@@ -51,13 +51,9 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
             var query = _productRepository.QueryAll();
 
             if (!string.IsNullOrWhiteSpace(request.Order))
-            {
                 query = query.OrderBy(OrderValidator.ValidateProductOrderFields(request.Order));
-            }
             else
-            {
                 query = query.OrderBy(p => p.Title);
-            }
 
             var pagedProducts = await PaginatedList<Product>
                 .CreateAsync(query, request.Page, request.Size, cancellationToken);

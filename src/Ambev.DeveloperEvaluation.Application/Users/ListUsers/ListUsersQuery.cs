@@ -22,6 +22,12 @@ namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
         /// <summary>
         /// Gets or sets the ordering criteria (e.g., "username asc, email desc").
         /// </summary>
-        public string? Order { get; set; }
+        public string? Order
+        {
+            get => _order;
+            set => _order = value?.Trim();
+        }
+
+        private string? _order;
     }
 }

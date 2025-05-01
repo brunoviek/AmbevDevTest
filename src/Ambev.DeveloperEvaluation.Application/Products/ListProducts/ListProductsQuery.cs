@@ -22,6 +22,12 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
         /// <summary>
         /// Gets or sets the ordering criteria (e.g., "title asc, price desc").
         /// </summary>
-        public string? Order { get; set; }
+        public string? Order
+        {
+            get => _order;
+            set => _order = value?.Trim();
+        }
+
+        private string? _order;
     }
 }

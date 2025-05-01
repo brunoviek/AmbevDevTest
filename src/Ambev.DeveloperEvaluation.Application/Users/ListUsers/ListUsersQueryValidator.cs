@@ -23,8 +23,8 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers
                 .WithMessage("Page size must not exceed 20.");
 
             RuleFor(x => x.Order)
-                .Matches(@"^[a-zA-Z0-9_]+\s+(asc|desc)(\s*,\s*[a-zA-Z0-9_]+\s+(asc|desc))*$")
-                .WithMessage("Order must be in the format \"field1 asc, field2 desc\".")
+                .Matches(@"^[A-Za-z0-9_]+(?:\s+(?:asc|desc))?(?:\s*,\s*[A-Za-z0-9_]+(?:\s+(?:asc|desc))?)*$")
+                .WithMessage("Order must be in the format \"field1 [asc|desc], field2 [asc|desc]\".")
                 .When(x => !string.IsNullOrWhiteSpace(x.Order));
         }
     }
