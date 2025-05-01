@@ -17,6 +17,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct
             CreateMap<CreateProductCommand, Product>();
             CreateMap<RatingModel, Rating>();
             CreateMap<Product, ProductResult>();
+            CreateMap<Rating, RatingResult>();
         }
     }
 }

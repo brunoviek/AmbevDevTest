@@ -18,7 +18,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.Shared
             RuleFor(x => x.Title)
                 .NotEmpty()
                 .MustAsync(async (title, ct) => !await repository.ExistsByTitleAsync(title, ct))
-                .WithMessage(title => $"A product with the title '{title}' already exists.");
+                .WithMessage(title => $"A product with the title '{title.Title}' already exists.");
             RuleFor(x => x.Price).GreaterThan(0);
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Category).NotEmpty();

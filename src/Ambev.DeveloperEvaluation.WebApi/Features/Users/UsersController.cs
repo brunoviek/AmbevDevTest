@@ -3,18 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
 using Ambev.DeveloperEvaluation.Application.Users.ListUsers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses;
 using Ambev.DeveloperEvaluation.Application.Users.UpdateUser;
 using Ambev.DeveloperEvaluation.WebApi.Features.Users.UpdateUser;
-using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Common.Pagination;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
@@ -57,7 +53,7 @@ public class UsersController : BaseController
         return Created(string.Empty, new ApiResponseWithData<UserResponse>
         {
             Success = true,
-            Message = "Product created successfully",
+            Message = "User created successfully",
             Data = _mapper.Map<UserResponse>(response)
         });
     }
@@ -74,11 +70,8 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUser([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var request = new GetUserRequest { Id = id };
-        var command = _mapper.Map<GetUserQuery>(request.Id);
-        var response = await _mediator.Send(command, cancellationToken);
-
-        return Ok(_mapper.Map<UserResponse>(response), "Product retrieved successfully");
+        var response = await _mediator.Send(new GetUserQuery(id), cancellationToken);
+        return Ok(_mapper.Map<UserResponse>(response), "User retrieved successfully");
     }
 
     /// <summary>
@@ -93,11 +86,8 @@ public class UsersController : BaseController
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteUser([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        var request = new DeleteUserRequest { Id = id };
-        var command = _mapper.Map<DeleteUserCommand>(request.Id);
-        var response = await _mediator.Send(command, cancellationToken);
-
-        return Ok(_mapper.Map<UserResponse>(response), "Product deleted successfully");
+        var response = await _mediator.Send(new DeleteUserCommand(id), cancellationToken);
+        return Ok(_mapper.Map<UserResponse>(response), "User deleted successfully");
     }
 
     /// <summary>
@@ -138,7 +128,7 @@ public class UsersController : BaseController
 
         var listUsersResponse = await _mediator.Send(command, cancellationToken);
 
-        return OkPaginated(_mapper.Map<PaginatedList<UserResponse>>(listUsersResponse), "Product retrieved successfully");
+        return OkPaginated(_mapper.Map<PaginatedList<UserResponse>>(listUsersResponse), "User retrieved successfully");
     }
 
     /// <summary>
@@ -158,6 +148,6 @@ public class UsersController : BaseController
         command.Id = id;
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(_mapper.Map<UserResponse>(response), "Product updated successfully");
+        return Ok(_mapper.Map<UserResponse>(response), "User updated successfully");
     }
 }
