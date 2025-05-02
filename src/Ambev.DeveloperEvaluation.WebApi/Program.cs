@@ -8,8 +8,11 @@ using Ambev.DeveloperEvaluation.Common.Validation;
 using Ambev.DeveloperEvaluation.IoC;
 using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.ORM.Extensions;
+using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Consumers;
 using Ambev.DeveloperEvaluation.WebApi.Extensions;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.ListUsers;
+using Ambev.DeveloperEvaluation.WebApi.Features.Users.Shared.Responses;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using Ambev.DeveloperEvaluation.WebApi.Seed;
 using FluentValidation;
@@ -17,6 +20,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Rebus.Config;
 using Serilog;
+using System.Reflection;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
@@ -35,7 +39,14 @@ public class Program
             builder.Services.AddEndpointsApiExplorer();
 
             builder.AddBasicHealthChecks();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+
+                c.OperationFilter<DynamicFilterOperationFilter>();
+            });
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(

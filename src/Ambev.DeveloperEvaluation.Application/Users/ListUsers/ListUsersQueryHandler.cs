@@ -11,6 +11,7 @@ using MediatR;
 using System.Linq.Dynamic.Core;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using AutoMapper.QueryableExtensions;
+using System.Reflection;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
 {
@@ -45,17 +46,17 @@ namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
             ListUsersQuery request,
             CancellationToken cancellationToken)
         {
-            var orderBy = !string.IsNullOrWhiteSpace(request.Order)
-                ? OrderValidator.ValidateUserOrderFields(request.Order)
-                : nameof(User.Username);
+            var allowedProperties = typeof(UserResult).GetPropertyNames();
 
-            var query = _userRepository
-                .QueryAll()
-                .OrderBy(orderBy)
-                .ProjectTo<UserResult>(_mapper.ConfigurationProvider);
+            var query = _userRepository.QueryAll()
+                .ApplyDynamicFilters(request.Filters, allowedProperties);
+
+            if (!string.IsNullOrWhiteSpace(request.Order))
+                query = query.OrderBy(
+                    OrderValidator.ValidateUserOrderFields(request.Order));
 
             return await PaginatedList<UserResult>.CreateAsync(
-                query,
+                query.ProjectTo<UserResult>(_mapper.ConfigurationProvider),
                 request.Page,
                 request.Size,
                 cancellationToken);
