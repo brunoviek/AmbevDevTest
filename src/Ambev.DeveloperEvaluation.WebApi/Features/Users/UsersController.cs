@@ -105,11 +105,8 @@ public class UsersController : BaseController
     /// <param name="cancellationToken">
     /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
     /// </param>
-    /// <returns>
-    /// An <see cref="ApiResponseWithData{PaginatedResponse{UserResponse}}"/> containing
-    /// the requested page of users along with pagination metadata.
-    /// </returns>
     [HttpGet]
+    [DynamicFilter(typeof(UserResponse))]
     [ProducesResponseType(typeof(PaginatedResponse<UserResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ListUsers(
@@ -118,17 +115,17 @@ public class UsersController : BaseController
         [FromQuery(Name = "_order")] string? _order = null,
         CancellationToken cancellationToken = default)
     {
-        var command = _mapper.Map<ListUsersQuery>(
-            new ListUsersRequest
-            {
-                Page = _page,
-                Size = _size,
-                Order = _order
-            });
+        var filters = Request.Query.ToFilters();
 
-        var listUsersResponse = await _mediator.Send(command, cancellationToken);
+        var result = await _mediator.Send(new ListUsersQuery()
+        {
+            Page = _page,
+            Size = _size,
+            Order = _order,
+            Filters = filters
+        }, cancellationToken);
 
-        return OkPaginated(_mapper.Map<PaginatedList<UserResponse>>(listUsersResponse), "User retrieved successfully");
+        return OkPaginated(_mapper.Map<PaginatedList<UserResponse>>(result), "Users retrieved successfully");
     }
 
     /// <summary>

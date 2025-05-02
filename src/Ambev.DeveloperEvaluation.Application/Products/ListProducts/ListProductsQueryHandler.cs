@@ -12,6 +12,8 @@ using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 using System.Linq.Dynamic.Core;
 using Ambev.DeveloperEvaluation.Application.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities.Product;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
+using AutoMapper.QueryableExtensions;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
 {
@@ -48,25 +50,20 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
             ListProductsQuery request,
             CancellationToken cancellationToken)
         {
-            var query = _productRepository.QueryAll();
+            var allowedProperties = typeof(ProductResult).GetPropertyNames();
+
+            var query = _productRepository.QueryAll()
+                .ApplyDynamicFilters(request.Filters, allowedProperties);
 
             if (!string.IsNullOrWhiteSpace(request.Order))
-                query = query.OrderBy(OrderValidator.ValidateProductOrderFields(request.Order));
-            else
-                query = query.OrderBy(p => p.Title);
+                query = query.OrderBy(
+                    OrderValidator.ValidateUserOrderFields(request.Order));
 
-            var pagedProducts = await PaginatedList<Product>
-                .CreateAsync(query, request.Page, request.Size, cancellationToken);
-
-            var results = pagedProducts
-                .Select(p => _mapper.Map<ProductResult>(p))
-                .ToList();
-
-            return new PaginatedList<ProductResult>(
-                results,
-                pagedProducts.TotalCount,
-                pagedProducts.CurrentPage,
-                pagedProducts.PageSize);
+            return await PaginatedList<ProductResult>.CreateAsync(
+                query.ProjectTo<ProductResult>(_mapper.ConfigurationProvider),
+                request.Page,
+                request.Size,
+                cancellationToken);
         }
     }
 }

@@ -29,5 +29,10 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
         }
 
         private string? _order;
+
+        /// <summary>
+        /// Gets or sets Filters to apply
+        /// </summary>
+        public IDictionary<string, string> Filters { get; set; } = new Dictionary<string, string>();
     }
 }
