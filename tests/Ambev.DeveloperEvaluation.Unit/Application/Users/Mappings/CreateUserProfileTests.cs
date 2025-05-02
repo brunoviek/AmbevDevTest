@@ -3,8 +3,8 @@ using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using AutoMapper;
 using Xunit;
 using FluentAssertions;
-using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
+using Ambev.DeveloperEvaluation.Common.Users;
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
 {

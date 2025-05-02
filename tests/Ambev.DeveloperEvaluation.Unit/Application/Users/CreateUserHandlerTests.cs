@@ -1,9 +1,9 @@
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Common.Security;
+using Ambev.DeveloperEvaluation.Common.Users;
 using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Application.Users.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
