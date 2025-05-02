@@ -7,11 +7,6 @@ using System.Linq.Dynamic.Core;
 
 namespace Ambev.DeveloperEvaluation.Application.Common
 {
-    /// <summary>
-    /// Applies dynamic query-string filters (exact match, wildcard, range)
-    /// to an IQueryable based on the provided filter dictionary and
-    /// optional allowed property list.
-    /// </summary>
     public static class QueryableExtensions
     {
         private static readonly Type[] NumericTypes = { typeof(int), typeof(double), typeof(decimal) };
@@ -21,82 +16,118 @@ namespace Ambev.DeveloperEvaluation.Application.Common
             IDictionary<string, string> filters,
             IEnumerable<string>? allowed = null)
         {
-            if (filters is null || filters.Count == 0)
+            if (filters == null || filters.Count == 0)
                 return query;
 
-            var map = new Dictionary<string, (string Path, Type Type)>(StringComparer.OrdinalIgnoreCase);
-            BuildMap(typeof(T), null, map);
-
+            var propertyMap = BuildPropertyMap(typeof(T));
             var allowedSet = allowed?.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            foreach (var (rawKey, rawVal) in filters)
+
+            foreach (var filter in filters)
             {
-                var val = rawVal?.Trim();
-                if (string.IsNullOrEmpty(val)) continue;
-
-                var (leaf, op) = rawKey.StartsWith("_min", StringComparison.OrdinalIgnoreCase)
-                    ? (rawKey[4..], ">=")
-                    : rawKey.StartsWith("_max", StringComparison.OrdinalIgnoreCase)
-                        ? (rawKey[4..], "<=")
-                        : (rawKey, "==");
-
-                if (allowedSet?.Contains(leaf) == false) continue;
-                if (!map.TryGetValue(leaf, out var info)) continue;
-
-                var (path, type) = info;
-                if (type == typeof(string))
+                if (TryParseFilter(filter.Key, filter.Value, propertyMap, allowedSet, out var expr, out var value))
                 {
-                    var clean = val.Trim('*');
-                    var method = val.StartsWith("*")
-                        ? val.EndsWith("*") ? "Contains" : "EndsWith"
-                        : val.EndsWith("*") ? "StartsWith" : null;
-
-                    query = method is null
-                        ? query.Where($"{path} == @0", clean)
-                        : query.Where($"{path}.{method}(@0)", clean);
-                }
-                else if (NumericTypes.Contains(type) || type == typeof(DateTime))
-                {
-                    var typed = Convert.ChangeType(val, type, CultureInfo.InvariantCulture)!;
-                    query = query.Where($"{path} {op} @0", typed);
+                    query = query.Where(expr, value);
                 }
             }
 
             return query;
         }
 
-        private static void BuildMap(
-            Type current,
-            string? prefix,
-            Dictionary<string, (string, Type)> map)
+        private static Dictionary<string, (string Path, Type Type)> BuildPropertyMap(Type type)
         {
-            foreach (var p in current.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            var map = new Dictionary<string, (string, Type)>(StringComparer.OrdinalIgnoreCase);
+            void Recurse(Type current, string prefix)
             {
-                var path = prefix is null ? p.Name : $"{prefix}.{p.Name}";
-                var t = p.PropertyType;
+                foreach (var prop in current.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    var path = string.IsNullOrEmpty(prefix) ? prop.Name : $"{prefix}.{prop.Name}";
+                    var t = prop.PropertyType;
 
-                if (t == typeof(string)
-                 || NumericTypes.Contains(t)
-                 || t == typeof(DateTime))
-                {
-                    map[p.Name] = (path, t);
-                }
-                else if (t.IsClass)
-                {
-                    BuildMap(t, path, map);
+                    if (t == typeof(string) || NumericTypes.Contains(t) || t == typeof(DateTime))
+                    {
+                        map[prop.Name] = (path, t);
+                    }
+                    else if (t.IsClass && t != typeof(string))
+                    {
+                        Recurse(t, path);
+                    }
                 }
             }
+
+            Recurse(type, "");
+            return map;
         }
-    
+
+        private static bool TryParseFilter(
+            string rawKey,
+            string rawVal,
+            Dictionary<string, (string Path, Type Type)> map,
+            HashSet<string>? allowed,
+            out string expression,
+            out object? value)
+        {
+            expression = string.Empty;
+            value = null;
+
+            var val = rawVal?.Trim();
+            if (string.IsNullOrEmpty(val))
+                return false;
+
+            var (leaf, op) = ParseOperator(rawKey);
+            if (allowed != null && !allowed.Contains(leaf))
+                return false;
+
+            if (!map.TryGetValue(leaf, out var info))
+                return false;
+
+            var (path, type) = info;
+            if (type == typeof(string))
+            {
+                expression = BuildStringExpression(path, val, out var cleaned);
+                value = cleaned;
+                return expression != null;
+            }
+
+            if (NumericTypes.Contains(type) || type == typeof(DateTime))
+            {
+                value = Convert.ChangeType(val, type, CultureInfo.InvariantCulture)!;
+                expression = $"{path} {op} @0";
+                return true;
+            }
+
+            return false;
+        }
+
+        private static (string Leaf, string Op) ParseOperator(string key)
+        {
+            if (key.StartsWith("_min", StringComparison.OrdinalIgnoreCase))
+                return (key[4..], ">=");
+            if (key.StartsWith("_max", StringComparison.OrdinalIgnoreCase))
+                return (key[4..], "<=");
+            return (key, "==");
+        }
+
+        private static string BuildStringExpression(string path, string val, out string cleaned)
+        {
+            cleaned = val.Trim('*');
+            var startsWith = val.EndsWith("*");
+            var endsWith = val.StartsWith("*");
+
+            return startsWith && endsWith
+                ? $"{path}.Contains(@0)"
+                : endsWith
+                    ? $"{path}.StartsWith(@0)"
+                    : startsWith
+                        ? $"{path}.EndsWith(@0)"
+                        : $"{path} == @0";
+        }
 
         public static IEnumerable<string> GetPropertyNames(this Type type)
         {
             foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var t = prop.PropertyType;
-                if (t == typeof(string)
-                    || t == typeof(bool)
-                    || t == typeof(DateTime)
-                    || NumericTypes.Contains(t))
+                if (t == typeof(string) || t == typeof(bool) || t == typeof(DateTime) || NumericTypes.Contains(t))
                 {
                     yield return prop.Name;
                 }
