@@ -166,7 +166,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
         /// </summary>
         /// <param name="category">Category name to filter products.</param>
         /// <param name="_page">Page number (default: 1).</param>
-        /// <param name="_size">Items per page (default: 10).</param>
+        /// <param name="_size">Products per page (default: 10).</param>
         /// <param name="_order">Sorting expression, e.g. "price desc" (optional).</param>
         /// <param name="cancellationToken">Cancellation token.</param>/// 
         [HttpGet("category/{category}")]

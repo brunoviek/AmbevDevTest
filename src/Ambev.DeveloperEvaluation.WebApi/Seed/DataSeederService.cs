@@ -1,8 +1,14 @@
-﻿using MediatR;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MediatR;
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
+using Ambev.DeveloperEvaluation.Application.Users.Shared.Models;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Application.Users.Shared.Models;
+using Ambev.DeveloperEvaluation.Domain.Entities.Products;
+using Ambev.DeveloperEvaluation.Domain.Entities.Carts;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Seed
 {
@@ -13,11 +19,19 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
     {
         private readonly IMediator _mediator;
         private readonly IUserRepository _userRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly ICartRepository _cartRepository;
 
-        public DataSeederService(IMediator mediator, IUserRepository repository)
+        public DataSeederService(
+            IMediator mediator,
+            IUserRepository userRepository,
+            IProductRepository productRepository,
+            ICartRepository cartRepository)
         {
             _mediator = mediator;
-            _userRepository = repository;
+            _userRepository = userRepository;
+            _productRepository = productRepository;
+            _cartRepository = cartRepository;
         }
 
         /// <summary>
@@ -26,6 +40,8 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
         public async Task SeedAsync()
         {
             await SeedUsersAsync();
+            await SeedProductsAsync();
+            await SeedCartsAsync();
         }
 
         private async Task SeedUsersAsync()
@@ -122,6 +138,64 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
                     }
                 });
             }
+        }
+
+        private async Task SeedProductsAsync()
+        {
+            var products = new[]
+            {
+                new { Title = "Widget Alpha", Price = 9.99m,  Description = "First widget",   Category = "Widgets", Image = "/img/a.png", Rate = 4.2, Count = 15 },
+                new { Title = "Widget Beta",  Price = 14.50m, Description = "Second widget",  Category = "Widgets", Image = "/img/b.png", Rate = 4.5, Count = 10 },
+                new { Title = "Gadget Gamma", Price = 19.75m, Description = "Premium gadget", Category = "Gadgets", Image = "/img/c.png", Rate = 4.7, Count =  8 },
+                new { Title = "Gadget Delta", Price = 24.00m, Description = "Deluxe gadget",  Category = "Gadgets", Image = "/img/d.png", Rate = 4.1, Count = 20 },
+                new { Title = "Tool Epsilon", Price = 29.99m, Description = "Handy tool",     Category = "Tools",   Image = "/img/e.png", Rate = 4.3, Count = 12 },
+            };
+
+            foreach (var pd in products)
+            {
+                if (!await _productRepository.ExistsByTitleAsync(pd.Title))
+                {
+                    var product = new Product
+                    {
+                        Title = pd.Title,
+                        Price = pd.Price,
+                        Description = pd.Description,
+                        Category = pd.Category,
+                        Image = pd.Image,
+                        Rating = new Rating { Rate = pd.Rate, Count = pd.Count }
+                    };
+                    await _productRepository.AddAsync(product);
+                }
+            }
+        }
+
+        private async Task SeedCartsAsync()
+        {
+            var user = await _userRepository.GetByEmailAsync("user@user.com");
+            if (user == null) return;
+
+            var hasCart = await _cartRepository.QueryAll()
+                .AnyAsync(c => c.UserId == user.Id);
+            if (hasCart) return;
+
+            var products = await _productRepository.QueryAll()
+                .Take(3)
+                .ToListAsync();
+
+            var items = products.Select(p => new CartItem
+            {
+                ProductId = p.Id,
+                Quantity = 1
+            }).ToList();
+
+            var cart = new Cart
+            {
+                UserId = user.Id,
+                Date = DateTime.UtcNow,
+                Products = items
+            };
+
+            await _cartRepository.AddAsync(cart);
         }
     }
 }

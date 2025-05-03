@@ -14,7 +14,7 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.Shared.Models
         /// <summary>
         /// Gets or sets the identifier of the user who owns the cart.
         /// </summary>
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         /// <summary>
         /// Gets or sets the date of the cart.

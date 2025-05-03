@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ambev.DeveloperEvaluation.Application.Carts.Shared.Results;
 
-namespace Ambev.DeveloperEvaluation.Application.Carts.Shared.Results
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Carts.Shared.Responses
 {
     /// <summary>
     /// Represents the data returned after creating, updating or retrieving a cart.
     /// </summary>
-    public class CartResult
+    public class CartResponse
     {
         /// <summary>
         /// Gets or sets the cart identifier.
@@ -29,6 +25,6 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.Shared.Results
         /// <summary>
         /// Gets or sets the collection of products in the cart.
         /// </summary>
-        public IList<CartProductResult> Products { get; set; } = new List<CartProductResult>();
+        public IList<CartProductResponse> Products { get; set; } = new List<CartProductResponse>();
     }
 }

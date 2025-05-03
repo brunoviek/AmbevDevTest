@@ -25,7 +25,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                    .HasForeignKey(c => c.UserId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(c => c.Items)
+            builder.HasMany(c => c.Products)
                    .WithOne(i => i.Cart)
                    .HasForeignKey(i => i.CartId);
         }
