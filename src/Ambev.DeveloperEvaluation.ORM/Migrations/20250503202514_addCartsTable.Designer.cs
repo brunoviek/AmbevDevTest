@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    [Migration("20250503165520_addingNewTabelaCartAndCartItems")]
-    partial class addingNewTabelaCartAndCartItems
+    [Migration("20250503202514_addCartsTable")]
+    partial class addCartsTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,9 +66,10 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("CartId", "ProductId")
+                        .IsUnique();
 
                     b.ToTable("CartItems", "store");
                 });
@@ -170,7 +171,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Carts.CartItem", b =>
                 {
                     b.HasOne("Ambev.DeveloperEvaluation.Domain.Entities.Carts.Cart", "Cart")
-                        .WithMany("Items")
+                        .WithMany("Products")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -313,7 +314,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
             modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Carts.Cart", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

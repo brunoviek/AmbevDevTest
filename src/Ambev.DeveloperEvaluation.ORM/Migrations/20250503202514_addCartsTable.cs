@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
     /// <inheritdoc />
-    public partial class addingNewTabelaCartAndCartItems : Migration
+    public partial class addCartsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -65,10 +65,11 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItems_CartId",
+                name: "IX_CartItems_CartId_ProductId",
                 schema: "store",
                 table: "CartItems",
-                column: "CartId");
+                columns: new[] { "CartId", "ProductId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_ProductId",

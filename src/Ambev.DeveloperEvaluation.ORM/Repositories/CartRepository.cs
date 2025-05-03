@@ -36,7 +36,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         /// <inheritdoc />
         public async Task<Cart> GetByIdAsync(int id)
         {
-            var cart = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == id);
+            var cart = await _context.Carts.Include(c => c.Products).FirstOrDefaultAsync(c => c.Id == id);
 
             if (cart is null)
                 throw new BadRequestException($"Cart with Id {id} not found.");
@@ -47,16 +47,20 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         /// <inheritdoc />
         public async Task<Cart> UpdateAsync(Cart cart)
         {
-            var existing = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cart.Id);
-
-            if (existing == null)
-                throw new BadRequestException($"Cart with Id {cart.Id} not found.");
+            var existing = await _context.Carts
+                .Include(c => c.Products)
+                .FirstOrDefaultAsync(c => c.Id == cart.Id)
+                ?? throw new BadRequestException($"Cart with Id {cart.Id} not found.");
 
             existing.UserId = cart.UserId;
             existing.Date = cart.Date;
 
-            _context.CartItems.RemoveRange(existing.Items);
-            existing.Items = cart.Items;
+            var newItems = cart.Products.ToList();
+
+            existing.Products.Clear();
+
+            foreach (var x in newItems)
+                existing.Products.Add(x);
 
             await _context.SaveChangesAsync();
             return existing;
@@ -78,7 +82,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         {
             return _context.Carts
                            .AsNoTracking()
-                           .Include(c => c.Items);
+                           .Include(c => c.Products);
         }
     }
 }

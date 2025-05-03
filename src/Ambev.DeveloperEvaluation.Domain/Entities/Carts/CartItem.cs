@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Ambev.DeveloperEvaluation.Domain.Entities.Products;
 
@@ -15,6 +16,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities.Carts
         public int Quantity { get; set; }
 
 
+        [JsonIgnore]
         public Cart Cart { get; set; }
         public Product Product { get; set; }
     }
