@@ -36,7 +36,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct
         public async Task<ProductResult> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken)
-                          ?? throw new KeyNotFoundException($"Product with ID {request.Id} not found.");
+                          ?? throw new KeyNotFoundException($"Products with ID {request.Id} not found.");
 
             return _mapper.Map<ProductResult>(entity);
         }

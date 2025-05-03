@@ -1,7 +1,9 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.CreateProduct;
 using Ambev.DeveloperEvaluation.Application.Products.DeleteProduct;
 using Ambev.DeveloperEvaluation.Application.Products.GetProduct;
+using Ambev.DeveloperEvaluation.Application.Products.ListProductCategories;
 using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
+using Ambev.DeveloperEvaluation.Application.Products.ListProductsByCategory;
 using Ambev.DeveloperEvaluation.Application.Products.UpdateProduct;
 using Ambev.DeveloperEvaluation.Common.Pagination;
 using Ambev.DeveloperEvaluation.WebApi.Common;
@@ -50,7 +52,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             return Created(string.Empty, new ApiResponseWithData<ProductResponse>
             {
                 Success = true,
-                Message = "Product created successfully",
+                Message = "Products created successfully",
                 Data = _mapper.Map<ProductResponse>(response)
             });
         }
@@ -68,7 +70,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
         public async Task<IActionResult> GetProduct([FromRoute] int id, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new GetProductQuery(id), cancellationToken);
-            return Ok(_mapper.Map<ProductResponse>(response), "Product retrieved successfully");
+            return Ok(_mapper.Map<ProductResponse>(response), "Products retrieved successfully");
         }
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
         public async Task<IActionResult> DeleteProduct([FromRoute] int id, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new DeleteProductCommand(id), cancellationToken);
-            return Ok(_mapper.Map<ProductResponse>(response), "Product deleted successfully");
+            return Ok(_mapper.Map<ProductResponse>(response), "Products deleted successfully");
         }
 
         /// <summary>
@@ -122,9 +124,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
                 Filters = filters
             }, cancellationToken);
 
-            return OkPaginated(
-                _mapper.Map<PaginatedList<ProductResponse>>(result),
-                "Products retrieved successfully");
+            return OkPaginated(_mapper.Map<PaginatedList<ProductResponse>>(result), "Products retrieved successfully");
         }
 
         /// <summary>
@@ -147,7 +147,47 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Products
             command.Id = id;
             var response = await _mediator.Send(command, cancellationToken);
 
-            return Ok(_mapper.Map<ProductResponse>(response), "Product updated successfully");
+            return Ok(_mapper.Map<ProductResponse>(response), "Products updated successfully");
+        }
+
+        /// <summary>
+        /// Retrieves all unique product categories.
+        /// </summary>
+        [HttpGet("categories")]
+        [ProducesResponseType(typeof(ApiResponseWithData<List<string>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
+        {
+            var categories = await _mediator.Send(new ListProductCategoriesQuery(), cancellationToken);
+            return Ok(categories, "Categories retrieved successfully");
+        }
+
+        /// <summary>
+        /// Retrieves products of a specific category with pagination and optional sorting.
+        /// </summary>
+        /// <param name="category">Category name to filter products.</param>
+        /// <param name="_page">Page number (default: 1).</param>
+        /// <param name="_size">Items per page (default: 10).</param>
+        /// <param name="_order">Sorting expression, e.g. "price desc" (optional).</param>
+        /// <param name="cancellationToken">Cancellation token.</param>/// 
+        [HttpGet("category/{category}")]
+        [ProducesResponseType(typeof(PaginatedResponse<ProductResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ListByCategory(
+            [FromRoute] string category,
+            [FromQuery(Name = "_page")] int _page = 1,
+            [FromQuery(Name = "_size")] int _size = 10,
+            [FromQuery(Name = "_order")] string? _order = null,
+            CancellationToken cancellationToken = default)
+        {
+            var result = await _mediator.Send(new ListProductsByCategoryQuery
+            {
+                Category = category,
+                Page = _page,
+                Size = _size,
+                Order = _order
+            }, cancellationToken);
+
+            return OkPaginated(_mapper.Map<PaginatedList<ProductResponse>>(result), "Products by category retrieved successfully");
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using AutoMapper;
 using Xunit;
 using FluentAssertions;
@@ -66,9 +66,9 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
         }
 
         /// <summary>
-        /// Tests that a CreateUserCommand maps to a Product entity correctly, including nested models.
+        /// Tests that a CreateUserCommand maps to a Products entity correctly, including nested models.
         /// </summary>
-        [Fact(DisplayName = "Should map CreateUserCommand to Product correctly using test data")]
+        [Fact(DisplayName = "Should map CreateUserCommand to Products correctly using test data")]
         public void Should_Map_CreateUserCommand_To_User()
         {
             var command = CreateUserHandlerTestData.GenerateValidCommand();
@@ -93,9 +93,9 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users.Mappings
         }
 
         /// <summary>
-        /// Tests that a Product entity maps to UserResult correctly.
+        /// Tests that a Products entity maps to UserResult correctly.
         /// </summary>
-        [Fact(DisplayName = "Should map Product to UserResult correctly")]
+        [Fact(DisplayName = "Should map Products to UserResult correctly")]
         public void Should_Map_User_To_UserResult()
         {
             var id = Guid.NewGuid();

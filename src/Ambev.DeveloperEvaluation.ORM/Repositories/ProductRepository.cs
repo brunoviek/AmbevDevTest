@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Entities.Product;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Products;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -71,6 +71,12 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         public IQueryable<Product> QueryAll()
         {
             return _context.Products.AsNoTracking();
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Products.AsNoTracking().AnyAsync(p => p.Id == id, cancellationToken);
         }
     }
 }

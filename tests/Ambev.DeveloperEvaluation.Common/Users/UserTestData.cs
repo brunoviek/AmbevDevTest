@@ -1,4 +1,4 @@
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Bogus;
 
@@ -12,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 public static class UserTestData
 {
     /// <summary>
-    /// Configures the Faker to generate valid Product entities.
+    /// Configures the Faker to generate valid Products entities.
     /// The generated users will have valid:
     /// - Username (using internet usernames)
     /// - Password (meeting complexity requirements)
@@ -48,11 +48,11 @@ public static class UserTestData
 
 
     /// <summary>
-    /// Generates a valid Product entity with randomized data.
+    /// Generates a valid Products entity with randomized data.
     /// The generated user will have all properties populated with valid values
     /// that meet the system's validation requirements.
     /// </summary>
-    /// <returns>A valid Product entity with randomly generated data.</returns>
+    /// <returns>A valid Products entity with randomly generated data.</returns>
     public static User GenerateValidUser()
     {
         return UserFaker.Generate();

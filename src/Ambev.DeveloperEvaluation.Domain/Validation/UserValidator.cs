@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities.User;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using FluentValidation;
 
@@ -23,11 +23,11 @@ public class UserValidator : AbstractValidator<User>
         
         RuleFor(user => user.Status)
             .NotEqual(UserStatus.Unknown)
-            .WithMessage("User status cannot be Unknown.");
+            .WithMessage("Users status cannot be Unknown.");
         
         RuleFor(user => user.Role)
             .NotEqual(UserRole.None)
-            .WithMessage("User role cannot be None.");
+            .WithMessage("Users role cannot be None.");
 
         When(user => user.Name != null &&
                           (!string.IsNullOrWhiteSpace(user.Name.Firstname) || !string.IsNullOrWhiteSpace(user.Name.Lastname)), () =>

@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using AutoMapper;
 using FluentAssertions;
 using Xunit;
@@ -8,7 +8,7 @@ using Xunit;
 namespace Ambev.DeveloperEvaluation.Unit.Application.Users.GetUser.Mappings;
 
 /// <summary>
-/// Contains tests for the GetUserMappingProfile to ensure Product entities are correctly mapped to GetUserResult.
+/// Contains tests for the GetUserMappingProfile to ensure Products entities are correctly mapped to GetUserResult.
 /// </summary>
 public class GetUserMappingProfileTests
 {
@@ -25,9 +25,9 @@ public class GetUserMappingProfileTests
     }
 
     /// <summary>
-    /// Tests that a valid Product entity is correctly mapped to GetUserResult.
+    /// Tests that a valid Products entity is correctly mapped to GetUserResult.
     /// </summary>
-    [Fact(DisplayName = "Should correctly map Product to GetUserResult")]
+    [Fact(DisplayName = "Should correctly map Products to GetUserResult")]
     public void Should_Map_User_To_GetUserResult_Correctly()
     {
         // Arrange

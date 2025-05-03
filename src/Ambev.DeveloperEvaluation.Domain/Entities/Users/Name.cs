@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Entities.User;
+﻿namespace Ambev.DeveloperEvaluation.Domain.Entities.Users;
 
 /// <summary>
 /// Represents the name of a user, including first name and last name.

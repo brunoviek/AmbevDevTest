@@ -1,17 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Ambev.DeveloperEvaluation.Application.Common;
+﻿using Ambev.DeveloperEvaluation.Application.Common;
 using Ambev.DeveloperEvaluation.Common.Pagination;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 using System.Linq.Dynamic.Core;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using AutoMapper.QueryableExtensions;
-using System.Reflection;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.ListUsers
 {

@@ -4,7 +4,7 @@ using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Validation;
 
-namespace Ambev.DeveloperEvaluation.Domain.Entities.User;
+namespace Ambev.DeveloperEvaluation.Domain.Entities.Users;
 
 /// <summary>
 /// Represents a user in the system with authentication and profile information.
@@ -79,7 +79,7 @@ public class User : BaseEntity, IUser
     string IUser.Role => Role.ToString();
 
     /// <summary>
-    /// Initializes a new instance of the User class.
+    /// Initializes a new instance of the Users class.
     /// </summary>
     public User()
     {

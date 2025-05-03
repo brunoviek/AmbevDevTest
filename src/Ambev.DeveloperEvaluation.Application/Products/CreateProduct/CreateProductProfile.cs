@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Products.Shared.Models;
 using Ambev.DeveloperEvaluation.Application.Products.Shared.Results;
-using Ambev.DeveloperEvaluation.Domain.Entities.Product;
+using Ambev.DeveloperEvaluation.Domain.Entities.Products;
 using AutoMapper;
 using System;
 using System.Collections.Generic;

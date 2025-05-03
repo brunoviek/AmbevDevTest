@@ -53,7 +53,7 @@ public class UsersController : BaseController
         return Created(string.Empty, new ApiResponseWithData<UserResponse>
         {
             Success = true,
-            Message = "User created successfully",
+            Message = "Users created successfully",
             Data = _mapper.Map<UserResponse>(response)
         });
     }
@@ -71,7 +71,7 @@ public class UsersController : BaseController
     public async Task<IActionResult> GetUser([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new GetUserQuery(id), cancellationToken);
-        return Ok(_mapper.Map<UserResponse>(response), "User retrieved successfully");
+        return Ok(_mapper.Map<UserResponse>(response), "Users retrieved successfully");
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class UsersController : BaseController
     public async Task<IActionResult> DeleteUser([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var response = await _mediator.Send(new DeleteUserCommand(id), cancellationToken);
-        return Ok(_mapper.Map<UserResponse>(response), "User deleted successfully");
+        return Ok(_mapper.Map<UserResponse>(response), "Users deleted successfully");
     }
 
     /// <summary>
@@ -145,6 +145,6 @@ public class UsersController : BaseController
         command.Id = id;
         var response = await _mediator.Send(command, cancellationToken);
 
-        return Ok(_mapper.Map<UserResponse>(response), "User updated successfully");
+        return Ok(_mapper.Map<UserResponse>(response), "Users updated successfully");
     }
 }

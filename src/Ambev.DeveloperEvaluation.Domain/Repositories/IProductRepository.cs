@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities.Product;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.Products;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Ambev.DeveloperEvaluation.Domain.Repositories
 {
     /// <summary>
-    /// Repository interface for Product entity operations
+    /// Repository interface for Products entity operations
     /// </summary>
     public interface IProductRepository
     {
@@ -52,14 +52,22 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         Task<bool> DeleteAsync(int id, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Returns the base Product query as an <see cref="IQueryable{Product}"/>,
+        /// Returns the base Products query as an <see cref="IQueryable{Product}"/>,
         /// with change tracking disabled (<c>AsNoTracking</c>),
         /// allowing filters, sorting, and pagination to be composed before execution.
         /// </summary>
         /// <returns>
-        /// An <see cref="IQueryable{Product}"/> representing all Product in the database,
+        /// An <see cref="IQueryable{Product}"/> representing all Products in the database,
         /// ready for further query composition and eventual execution via EF Core.
         /// </returns>
         IQueryable<Product> QueryAll();
+
+        /// <summary>
+        /// Checks if a product with the specified identifier exists.
+        /// </summary>
+        /// <param name="id">The identifier of the product to check.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>True if a product exists with the given id; otherwise, false.</returns>
+        Task<bool> ExistsByIdAsync(int id, CancellationToken cancellationToken = default);
     }
 }

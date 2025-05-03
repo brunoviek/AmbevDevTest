@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Rebus.Bus;
 using Ambev.DeveloperEvaluation.Application.Products.Shared.Results;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Application.Users.Events;
+using Ambev.DeveloperEvaluation.Application.Products.Events;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.DeleteProduct
 {
@@ -44,7 +41,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.DeleteProduct
         public async Task<ProductResult> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             var existing = await _repository.GetByIdAsync(request.Id, cancellationToken)
-                ?? throw new KeyNotFoundException($"Product with ID {request.Id} not found.");
+                ?? throw new KeyNotFoundException($"Products with ID {request.Id} not found.");
 
             await _repository.DeleteAsync(request.Id, cancellationToken);
 

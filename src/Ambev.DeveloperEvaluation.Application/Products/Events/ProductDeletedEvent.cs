@@ -1,17 +1,17 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities.Product;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Users.Events
+namespace Ambev.DeveloperEvaluation.Application.Products.Events
 {
-    public class ProductUpdatedEvent
+    public class ProductDeletedEvent
     {
         public Product Product { get; }
 
-        public ProductUpdatedEvent(Product product)
+        public ProductDeletedEvent(Product product)
         {
             Product = product;
         }

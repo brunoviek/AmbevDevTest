@@ -1,11 +1,11 @@
 using AutoMapper;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 
 namespace Ambev.DeveloperEvaluation.Application.Users.GetUser;
 
 /// <summary>
-/// Profile for mapping between Product entity and GetUserResponse
+/// Profile for mapping between Products entity and GetUserResponse
 /// </summary>
 public class GetUserProfile : Profile
 {

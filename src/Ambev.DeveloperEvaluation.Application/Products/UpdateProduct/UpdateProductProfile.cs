@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities.Product;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.Products;
 using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
@@ -10,12 +10,11 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateProductProfile"/> class.
-        /// Configures mappings from UpdateProductCommand to Product and nested value objects.
+        /// Configures mappings from UpdateProductCommand to Products and nested value objects.
         /// </summary>
         public UpdateProductProfile()
         {
-            CreateMap<UpdateProductCommand, Product>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<UpdateProductCommand, Product>();
         }
     }
 }
