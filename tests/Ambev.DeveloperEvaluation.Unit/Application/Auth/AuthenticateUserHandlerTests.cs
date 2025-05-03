@@ -1,6 +1,6 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Auth.AuthenticateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using FluentAssertions;
@@ -125,7 +125,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Auth
         }
 
         /// <summary>
-        /// Tests that inactive user throws UnauthorizedAccessException with "Product is not active".
+        /// Tests that inactive user throws UnauthorizedAccessException with "Products is not active".
         /// </summary>
         [Fact]
         public async Task Handle_InactiveUser_ThrowsUnauthorizedAccessException()
@@ -145,7 +145,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Auth
 
             // Assert
             await act.Should().ThrowAsync<UnauthorizedAccessException>()
-                .WithMessage("Product is not active");
+                .WithMessage("Products is not active");
         }
     }
 }

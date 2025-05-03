@@ -1,5 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Application.Products.Shared.Results;
-using Ambev.DeveloperEvaluation.Application.Users.Events;
+﻿using Ambev.DeveloperEvaluation.Application.Products.Events;
+using Ambev.DeveloperEvaluation.Application.Products.Shared.Results;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
@@ -41,7 +41,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.UpdateProduct
         public async Task<ProductResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var existing = await _productRepository.GetByIdAsync(request.Id, cancellationToken)
-                ?? throw new KeyNotFoundException($"Product with ID {request.Id} not found.");
+                ?? throw new KeyNotFoundException($"Products with ID {request.Id} not found.");
 
             _mapper.Map(request, existing);
 

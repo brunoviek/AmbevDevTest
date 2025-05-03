@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Domain.Entities.Product
+namespace Ambev.DeveloperEvaluation.Domain.Entities.Products
 {
     /// <summary>
     /// Represents a product in the catalog.

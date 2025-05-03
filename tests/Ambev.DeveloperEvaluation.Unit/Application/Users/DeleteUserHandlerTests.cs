@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Common.Validation;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using Ambev.DeveloperEvaluation.Unit.Domain.Specifications.TestData;
@@ -95,7 +95,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
             // Assert
             await act.Should()
                 .ThrowAsync<KeyNotFoundException>()
-                .WithMessage($"Product with ID {userId} not found");
+                .WithMessage($"Products with ID {userId} not found");
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Entities.User;
+﻿namespace Ambev.DeveloperEvaluation.Domain.Entities.Users;
 
 /// <summary>
 /// Represents the address of a user, including street, number, city, zip code, and geolocation.

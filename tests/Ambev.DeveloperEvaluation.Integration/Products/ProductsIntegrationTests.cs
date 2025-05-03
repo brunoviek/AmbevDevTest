@@ -38,7 +38,7 @@ namespace Ambev.DeveloperEvaluation.Integration.Products
         {
             var newProduct = new
             {
-                title = "Product X",
+                title = "Products X",
                 price = 9.99,
                 description = "Description of product X",
                 category = "Category Y",

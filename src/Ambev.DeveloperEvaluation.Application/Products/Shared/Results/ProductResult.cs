@@ -10,6 +10,11 @@ namespace Ambev.DeveloperEvaluation.Application.Products.Shared.Results
     public class ProductResult
     {
         /// <summary>
+        /// The product Id.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// The product title.
         /// </summary>
         public string Title { get; set; } = string.Empty;

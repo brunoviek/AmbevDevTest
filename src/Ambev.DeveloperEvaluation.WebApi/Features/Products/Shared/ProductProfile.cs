@@ -7,12 +7,12 @@ using AutoMapper;
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Products.Shared
 {
     /// <summary>
-    /// Profile for mapping Product results and responses features
+    /// Profile for mapping Products results and responses features
     /// </summary>
     public class ProductProfile : Profile
     {
         /// <summary>
-        /// Initializes the mapping Product results and responses features
+        /// Initializes the mapping Products results and responses features
         /// </summary>
         public ProductProfile()
         {

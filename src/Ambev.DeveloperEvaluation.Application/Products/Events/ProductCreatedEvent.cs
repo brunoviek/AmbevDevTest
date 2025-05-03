@@ -1,12 +1,12 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities.Product;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.Products;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Users.Events
+namespace Ambev.DeveloperEvaluation.Application.Products.Events
 {
     public class ProductCreatedEvent
     {

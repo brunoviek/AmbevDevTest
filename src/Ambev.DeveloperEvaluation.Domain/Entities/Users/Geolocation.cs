@@ -1,4 +1,4 @@
-﻿namespace Ambev.DeveloperEvaluation.Domain.Entities.User;
+﻿namespace Ambev.DeveloperEvaluation.Domain.Entities.Users;
 
 /// <summary>
 /// Represents the geographic location (latitude and longitude) of an address.

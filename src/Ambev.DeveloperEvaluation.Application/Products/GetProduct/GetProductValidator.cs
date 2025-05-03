@@ -12,8 +12,7 @@ namespace Ambev.DeveloperEvaluation.Application.Products.GetProduct
         /// </summary>
         public GetProductValidator()
         {
-            RuleFor(x => x.Id)
-                .GreaterThan(0);
+            RuleFor(x => x.Id).GreaterThan(0);
         }
     }
 }

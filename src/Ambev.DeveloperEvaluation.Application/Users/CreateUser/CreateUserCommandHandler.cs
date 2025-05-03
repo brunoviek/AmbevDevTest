@@ -3,7 +3,7 @@ using MediatR;
 using FluentValidation;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Entities.User;
+using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Common.Exceptions;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Rebus.Bus;
@@ -50,7 +50,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserR
 
         var existingUser = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
         if (existingUser != null)
-            throw new BadRequestException($"Product with email {command.Email} already exists");
+            throw new BadRequestException($"Products with email {command.Email} already exists");
 
         var user = _mapper.Map<User>(command);
         user.Password = _passwordHasher.HashPassword(command.Password);

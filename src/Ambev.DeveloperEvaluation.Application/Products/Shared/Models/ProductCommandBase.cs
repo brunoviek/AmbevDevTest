@@ -1,4 +1,4 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities.Product;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,18 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using Ambev.DeveloperEvaluation.Common.Pagination;
-using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Application.Products.Shared.Results;
-using Ambev.DeveloperEvaluation.Application.Products.ListProducts;
 using System.Linq.Dynamic.Core;
 using Ambev.DeveloperEvaluation.Application.Common;
-using Ambev.DeveloperEvaluation.Domain.Entities.Product;
-using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using AutoMapper.QueryableExtensions;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
@@ -52,12 +44,10 @@ namespace Ambev.DeveloperEvaluation.Application.Products.ListProducts
         {
             var allowedProperties = typeof(ProductResult).GetPropertyNames();
 
-            var query = _productRepository.QueryAll()
-                .ApplyDynamicFilters(request.Filters, allowedProperties);
+            var query = _productRepository.QueryAll().ApplyDynamicFilters(request.Filters, allowedProperties);
 
             if (!string.IsNullOrWhiteSpace(request.Order))
-                query = query.OrderBy(
-                    OrderValidator.ValidateUserOrderFields(request.Order));
+                query = query.OrderBy(OrderValidator.ValidateProductOrderFields(request.Order));
 
             return await PaginatedList<ProductResult>.CreateAsync(
                 query.ProjectTo<ProductResult>(_mapper.ConfigurationProvider),

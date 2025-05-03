@@ -14,6 +14,6 @@ public class GetUserValidator : AbstractValidator<GetUserQuery>
     {
         RuleFor(x => x.Id)
             .NotEmpty()
-            .WithMessage("Product ID is required");
+            .WithMessage("Products ID is required");
     }
 }

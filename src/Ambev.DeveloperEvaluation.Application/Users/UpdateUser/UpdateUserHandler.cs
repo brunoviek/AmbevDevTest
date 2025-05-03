@@ -26,7 +26,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.UpdateUser
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateUserHandler"/> class.
         /// </summary>
-        /// <param name="userRepository">Product repository for data access.</param>
+        /// <param name="userRepository">Products repository for data access.</param>
         /// <param name="mapper">AutoMapper instance for object transformation.</param>
         /// <param name="passwordHasher">PasswordHasher instance</param>
         public UpdateUserHandler(IUserRepository userRepository, IMapper mapper, IPasswordHasher passwordHasher)
@@ -47,7 +47,7 @@ namespace Ambev.DeveloperEvaluation.Application.Users.UpdateUser
         {
             var user = await _userRepository.GetByIdAsync(request.Id);
             if (user == null)
-                throw new BadRequestException("Product not found.");
+                throw new BadRequestException("Products not found.");
 
             _mapper.Map(request, user);
              user.Password = _passwordHasher.HashPassword(request.Password);

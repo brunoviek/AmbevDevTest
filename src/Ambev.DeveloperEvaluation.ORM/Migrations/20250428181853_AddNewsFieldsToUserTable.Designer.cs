@@ -26,7 +26,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User.User", b =>
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Users.Users", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,9 +74,9 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                     b.ToTable("Users", "auth");
                 });
 
-            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.User.User", b =>
+            modelBuilder.Entity("Ambev.DeveloperEvaluation.Domain.Entities.Users.Users", b =>
                 {
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.User.Address", "Address", b1 =>
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.Users.Address", "Address", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .ValueGeneratedOnAdd()
@@ -111,7 +111,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
 
-                            b1.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.User.Geolocation", "Geolocation", b2 =>
+                            b1.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.Users.Geolocation", "Geolocation", b2 =>
                                 {
                                     b2.Property<Guid>("AddressUserId")
                                         .ValueGeneratedOnAdd()
@@ -141,7 +141,7 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                                 .IsRequired();
                         });
 
-                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.User.Name", "Name", b1 =>
+                    b.OwnsOne("Ambev.DeveloperEvaluation.Domain.Entities.Users.Name", "Name", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .ValueGeneratedOnAdd()

@@ -6,8 +6,8 @@ using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using MediatR;
 using Rebus.Bus;
-using Ambev.DeveloperEvaluation.Domain.Entities.Product;
-using Ambev.DeveloperEvaluation.Application.Users.Events;
+using Ambev.DeveloperEvaluation.Domain.Entities.Products;
+using Ambev.DeveloperEvaluation.Application.Products.Events;
 
 namespace Ambev.DeveloperEvaluation.Application.Products.CreateProduct
 {
