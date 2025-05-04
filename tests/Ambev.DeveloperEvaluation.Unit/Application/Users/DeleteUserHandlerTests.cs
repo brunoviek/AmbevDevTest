@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.Shared.Results;
 using Ambev.DeveloperEvaluation.Common.Validation;
+using Ambev.DeveloperEvaluation.Domain.Entities.Carts;
 using Ambev.DeveloperEvaluation.Domain.Entities.Users;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
@@ -11,6 +12,7 @@ using Ambev.DeveloperEvaluation.Unit.Domain.Specifications.TestData;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
+using FluentValidation.TestHelper;
 using MediatR;
 using NSubstitute;
 using Xunit;
@@ -98,21 +100,57 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Users
                 .WithMessage($"Products with ID {userId} not found");
         }
 
-        /// <summary>
-        /// Tests that a deletion request with an empty Guid throws a <see cref="ValidationException"/>.
-        /// </summary>
-        [Fact(DisplayName = "Given empty ID When handling Then throws ValidationException")]
-        public void Handle_InvalidRequest_ThrowsValidationException()
+        [Fact(DisplayName = "Given empty ID When validating Then returns error on Id")]
+        public async Task Handle_InvalidRequest_ValidationFails()
         {
             // Arrange
-            var validator = new DeleteUserValidator();
+            var cartRepo = Substitute.For<ICartRepository>();
+            var validator = new DeleteUserValidator(cartRepo);
             var command = new DeleteUserCommand(Guid.Empty);
 
-            // Act & Assert
-            validator
-              .Invoking(v => v.ValidateAndThrow(command))
-              .Should()
-              .Throw<ValidationException>();
+            // Act
+            var result = await validator.TestValidateAsync(command);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(c => c.Id);
+        }
+
+        [Fact(DisplayName = "Given user with carts When validating Then returns error on Id")]
+        public async Task Handle_UserHasCarts_ValidationFails()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var cartRepo = Substitute.For<ICartRepository>();
+            cartRepo.QueryAll().Returns(new[] {
+                new Cart { Id = 1, UserId = userId, Date = DateTime.UtcNow }
+            }.AsQueryable());
+
+            var validator = new DeleteUserValidator(cartRepo);
+            var command = new DeleteUserCommand(userId);
+
+            // Act
+            var result = await validator.TestValidateAsync(command);
+
+            // Assert
+            result.ShouldHaveValidationErrorFor(c => c.Id);
+        }
+
+        [Fact(DisplayName = "Given valid user with no carts When validating Then passes")]
+        public async Task Handle_UserHasNoCarts_ValidationSucceeds()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var cartRepo = Substitute.For<ICartRepository>();
+            cartRepo.QueryAll().Returns(Array.Empty<Cart>().AsQueryable());
+
+            var validator = new DeleteUserValidator(cartRepo);
+            var command = new DeleteUserCommand(userId);
+
+            // Act
+            var result = await validator.TestValidateAsync(command);
+
+            // Assert
+            result.ShouldNotHaveValidationErrorFor(c => c.Id);
         }
     }
 }

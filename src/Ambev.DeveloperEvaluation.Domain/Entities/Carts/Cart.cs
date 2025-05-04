@@ -12,7 +12,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities.Carts
         public int Id { get; set; }
         public Guid UserId { get; set; }
         public DateTime Date { get; set; }
-        public User User { get; set; } = new User();
-        public ICollection<CartItem> Products { get; set; } = new List<CartItem>();
+        public User User { get; set; } = null!;
+        public List<CartItem> Products { get; set; } = null!;
     }
 }

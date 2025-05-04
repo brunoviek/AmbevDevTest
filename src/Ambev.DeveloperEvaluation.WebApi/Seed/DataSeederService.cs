@@ -174,18 +174,20 @@ namespace Ambev.DeveloperEvaluation.WebApi.Seed
             var user = await _userRepository.GetByEmailAsync("user@user.com");
             if (user == null) return;
 
-            var hasCart = await _cartRepository.QueryAll()
+            var hasCart = await _cartRepository
+                .QueryAll()
                 .AnyAsync(c => c.UserId == user.Id);
             if (hasCart) return;
 
-            var products = await _productRepository.QueryAll()
+            var products = await _productRepository
+                .QueryAll()
                 .Take(3)
                 .ToListAsync();
 
             var items = products.Select(p => new CartItem
             {
                 ProductId = p.Id,
-                Quantity = 1
+                Quantity = 1,
             }).ToList();
 
             var cart = new Cart

@@ -83,9 +83,9 @@ The script will:
 * [Health Check](http://localhost:8080/health)
 * Main endpoints:
 
-  * `GET https://localhost:8080/api/products`
-  * `POST https://localhost:8080/api/carts`
-  * `PUT https://localhost:8080/api/users/{id}`
+  * `GET http://localhost:8080/api/products`
+  * `POST http://localhost:8080/api/carts`
+  * `PUT http://localhost:8080/api/users/{id}`
   * ...
 
 Adjust ports as needed in `docker-compose.yml` or `launchSettings.json`.

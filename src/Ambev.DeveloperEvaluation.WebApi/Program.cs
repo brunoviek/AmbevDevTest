@@ -1,4 +1,6 @@
 using Ambev.DeveloperEvaluation.Application;
+using Ambev.DeveloperEvaluation.Application.Carts.Events;
+using Ambev.DeveloperEvaluation.Application.Products.Events;
 using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
 using Ambev.DeveloperEvaluation.Application.Users.Events;
 using Ambev.DeveloperEvaluation.Common.HealthChecks;
@@ -69,6 +71,12 @@ public class Program
                     .Transport(t => t.UseRabbitMq(rabbitMqConnectionString, rabbitMqInputQueue))
                     .Logging(l => l.Console()),
                 onCreated: async bus => {
+                    await bus.Subscribe<CartCreatedEvent>();
+                    await bus.Subscribe<CartDeletedEvent>();
+                    await bus.Subscribe<CartUpdatedEvent>();
+                    await bus.Subscribe<ProductCreatedEvent>();
+                    await bus.Subscribe<ProductDeletedEvent>();
+                    await bus.Subscribe<ProductUpdatedEvent>();
                     await bus.Subscribe<UserRegisteredEvent>();
                 }
             );
