@@ -17,7 +17,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities.Carts
 
 
         [JsonIgnore]
-        public Cart Cart { get; set; }
-        public Product Product { get; set; }
+        public Cart Cart { get; set; } = new Cart();
+        public Product Product { get; set; } = null!;
     }
 }

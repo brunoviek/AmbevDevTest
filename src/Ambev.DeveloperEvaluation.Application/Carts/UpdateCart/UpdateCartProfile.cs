@@ -19,7 +19,7 @@ namespace Ambev.DeveloperEvaluation.Application.Carts.UpdateCart
         /// </summary>
         public UpdateCartProfile()
         {
-            CreateMap<UpdateCartCommand, Cart>().ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<UpdateCartCommand, Cart>();
 
         }
     }
